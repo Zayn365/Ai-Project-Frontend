@@ -53,7 +53,7 @@ export default function Page() {
       .catch((err) => {
         console.log(err);
         aiError(err);
-        fail(err.message);
+        // fail(err.message);
       });
   }
 
