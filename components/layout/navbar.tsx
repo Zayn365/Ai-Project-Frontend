@@ -34,10 +34,15 @@ interface FeatureProps {
 }
 
 const routeList: RouteProps[] = [
+  // {
+  //   href: "#testimonials",
+  //   label: "Testimonials",
+  // },
   {
-    href: "#testimonials",
-    label: "Testimonials",
+    href: "/text-to-speech",
+    label: "Text-To-Speech",
   },
+
   // {
   //   href: "#team",
   //   label: "Team",

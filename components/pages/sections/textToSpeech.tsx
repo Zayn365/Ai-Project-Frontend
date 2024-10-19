@@ -1,14 +1,14 @@
-// components/AiBlogForm.tsx
 "use client";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -21,28 +21,33 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-const formAiSchema = z.object({
-  prompt: z.string().min(10, "Prompt must be at least 10 characters"),
+const textToSpeechSchema = z.object({
+  text: z.string().min(5, "Text must be at least 5 characters"),
 });
 
-export function AiBlogForm({
-  onSubmit,
-}: {
-  onSubmit: (values: z.infer<typeof formAiSchema>) => Promise<void>;
-}) {
+interface IAppProps {}
+
+export default function App(props: IAppProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const formAi = useForm<z.infer<typeof formAiSchema>>({
-    resolver: zodResolver(formAiSchema),
+  const form = useForm<z.infer<typeof textToSpeechSchema>>({
+    resolver: zodResolver(textToSpeechSchema),
     defaultValues: {
-      prompt: "",
+      text: "",
     },
   });
 
-  const handleSubmit = async (values: z.infer<typeof formAiSchema>) => {
+  const handleTextToSpeech = async (
+    values: z.infer<typeof textToSpeechSchema>
+  ) => {
     setIsLoading(true);
     try {
-      await onSubmit(values);
+      // Simulate text-to-speech API call
+      const utterance = new SpeechSynthesisUtterance(values.text);
+      speechSynthesis.speak(utterance);
+      await new Promise((resolve) => {
+        utterance.onend = resolve;
+      });
     } finally {
       setIsLoading(false);
     }
@@ -50,22 +55,22 @@ export function AiBlogForm({
 
   return (
     <Card className="bg-muted/60 dark:bg-card">
-      <CardHeader className="text-primary text-2xl">Create AI Blog</CardHeader>
+      <CardHeader className="text-primary text-2xl">Text to Speech</CardHeader>
       <CardContent>
-        <Form {...formAi}>
+        <Form {...form}>
           <form
-            onSubmit={formAi.handleSubmit(handleSubmit)}
+            onSubmit={form.handleSubmit(handleTextToSpeech)}
             className="grid w-full gap-4"
           >
-            {/* Prompt Field */}
+            {/* Text Field */}
             <FormField
-              control={formAi.control}
-              name="prompt"
+              control={form.control}
+              name="text"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Prompt</FormLabel>
+                  <FormLabel>Text</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter the blog prompt" {...field} />
+                    <Input placeholder="Enter the text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,7 +84,7 @@ export function AiBlogForm({
               className="mt-4 !bg-[#ea580c]"
               disabled={isLoading}
             >
-              {isLoading ? "Submitting..." : "Submit Blog"}
+              {isLoading ? "Converting..." : "Convert to Speech"}
             </Button>
           </form>
         </Form>
