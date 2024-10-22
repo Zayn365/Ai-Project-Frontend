@@ -193,6 +193,9 @@ export const Navbar = () => {
             <Github className="size-5" />
           </Link>
         </Button>
+        <Button asChild size="sm" variant="outline" aria-label="View on GitHub">
+          <Link href="/signin">SignIn</Link>
+        </Button>
       </div>
     </header>
   );

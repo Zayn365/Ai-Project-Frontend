@@ -46,7 +46,6 @@ export default function AuthPage() {
         <div className="hidden sm:flex w-full sm:w-1/2 bg-cover bg-center">
           <img src="./looker2.jpg" />
         </div>
-
         {/* Form Section */}
         <Card className="w-full sm:w-1/2">
           <CardHeader className="text-primary text-3xl font-bold !underline text-center">
@@ -114,8 +113,8 @@ export default function AuthPage() {
                   </p>
                   <p className="text-xs mt-2">
                     If you don't have an account
-                    <a href="/signup" className="text-primary underline">
-                      click here
+                    <a href="/signup" className="text-primary ml-1 underline">
+                      Click Here!
                     </a>
                     .
                   </p>
@@ -124,7 +123,7 @@ export default function AuthPage() {
             </Form>
           </CardContent>
           <CardFooter></CardFooter>
-        </Card>
+        </Card>{" "}
       </div>
     </section>
   );
