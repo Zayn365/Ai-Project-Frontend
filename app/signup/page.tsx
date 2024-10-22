@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { signUp } from "@/hooks/authHooks";
 
 // Schema for Sign In and Sign Up
 const signInUpSchema = z
@@ -46,7 +47,8 @@ export default function AuthPage() {
   });
 
   const onSubmit = (values: z.infer<typeof signInUpSchema>) => {
-    console.log(values); // Handle sign-in/sign-up logic
+    signUp(values.email, values.password);
+    // console.log(values);
   };
 
   return (
