@@ -39,3 +39,18 @@ export async function signUp(email: string, password: string) {
     );
   }
 }
+
+export async function logout() {
+  try {
+    console.log("YOYOY");
+    Cookies.remove("user");
+    Cookies.remove("authToken");
+    success("Logged Out Successfully");
+    window.location.href = "/";
+  } catch (error: any) {
+    console.log(error);
+    fail(
+      error.response ? error.response.data.message : "Unknown Error Occured"
+    );
+  }
+}

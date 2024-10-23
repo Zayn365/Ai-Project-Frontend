@@ -24,6 +24,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ToggleTheme } from "./toogle-theme";
+import { logout } from "@/hooks/authHooks";
 
 interface RouteProps {
   href: string;
@@ -82,6 +83,9 @@ const featureList: FeatureProps[] = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const { user } = useAppContext();
   const route = useRouter();
 
@@ -218,7 +222,47 @@ export const Navbar = () => {
           </Link>
         </Button>
         {user ? (
-          user?.username
+          <>
+            <button
+              onClick={toggleDropdown}
+              onBlur={() => setIsDropdownOpen(false)}
+              className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+            >
+              <span>{user?.username}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md py-1 z-50">
+                <Link
+                  href="/profile"
+                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                  }}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <Button
             asChild
