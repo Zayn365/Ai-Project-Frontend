@@ -121,11 +121,10 @@ export default function AuthPage() {
                     .
                   </p>
                   <p className="text-xs mt-2">
-                    If you don't have an account
+                    If you don&apos;t have an account
                     <a href="/signup" className="text-primary ml-1 underline">
                       Click Here!
                     </a>
-                    .
                   </p>
                 </div>
               </form>
