@@ -1,6 +1,8 @@
 "use client";
 import { ChevronsDown, Github, Menu } from "lucide-react";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { useAppContext } from "@/context/AppContext";
 import {
   Sheet,
   SheetContent,
@@ -80,6 +82,9 @@ const featureList: FeatureProps[] = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const { user } = useAppContext();
+  const route = useRouter();
+
   return (
     <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
       <Link href="/" className="font-bold text-lg flex items-center">
@@ -127,6 +132,25 @@ export const Navbar = () => {
 
             <SheetFooter className="flex-col sm:flex-col justify-start items-start">
               <Separator className="mb-2" />
+              {user ? (
+                user?.username
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    route.push("/signin");
+                    setIsOpen(false);
+                  }}
+                  variant="ghost"
+                  className="w-full mb-2 justify-start"
+                >
+                  <div className="flex gap-2">
+                    <span className="block lg:hidden">
+                      <Link href="/signin">SignIn</Link>
+                    </span>
+                  </div>
+                </Button>
+              )}
 
               <ToggleTheme />
             </SheetFooter>
@@ -193,9 +217,18 @@ export const Navbar = () => {
             <Github className="size-5" />
           </Link>
         </Button>
-        <Button asChild size="sm" variant="outline" aria-label="View on GitHub">
-          <Link href="/signin">SignIn</Link>
-        </Button>
+        {user ? (
+          user?.username
+        ) : (
+          <Button
+            asChild
+            size="sm"
+            variant="outline"
+            aria-label="View on GitHub"
+          >
+            <Link href="/signin">SignIn</Link>
+          </Button>
+        )}
       </div>
     </header>
   );

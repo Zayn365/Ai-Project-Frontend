@@ -1,10 +1,15 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-
+type user = {
+  username: string;
+  id: Number;
+  password: string;
+  email: string;
+} | null;
 interface AppContextType {
-  user: string | null;
-  setUser: (user: string | null) => void;
+  user: user;
+  setUser: (user: user | null) => void;
   authToken: string | null;
   setAuthtoken: (token: string | null) => void;
 }
@@ -16,7 +21,9 @@ const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const getUser = Cookies.get("user");
   const getAuthToken = Cookies.get("authToken");
-  const [user, setUser] = useState<string | null>(getUser ? getUser : null);
+  const [user, setUser] = useState<string | null>(
+    getUser ? JSON.parse(getUser) : null
+  );
   const [authToken, setAuthtoken] = useState<string | null>(
     getAuthToken ? getAuthToken : null
   );
@@ -27,8 +34,11 @@ const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     authToken,
     setAuthtoken,
   };
+  console.log("🚀 ~ values.authToken:", values.authToken);
+  console.log("🚀 ~ values.user:", values.user);
 
   return (
+    // @ts-ignore
     <AppContextValue.Provider value={values}>
       {children}
     </AppContextValue.Provider>

@@ -2,6 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { signIn } from "@/hooks/authHooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Card,
@@ -36,14 +37,18 @@ export default function AuthPage() {
   });
 
   const onSubmit = (values: z.infer<typeof signInUpSchema>) => {
-    console.log(values); // Handle sign-in/sign-up logic
+    console.log(values);
+    signIn(values.email, values.password);
   };
 
   return (
     <section className="container pt-24 sm:pt-32 flex justify-center">
-      <div className="flex flex-col sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden">
+      <div className="flex flex-wrap justify-between sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden">
         {/* Image Section */}
-        <div className="hidden sm:flex w-full sm:w-1/2 bg-cover bg-center">
+        <div
+          className="hidden sm:flex w-full sm:w-1/2 bg-cover bg-center"
+          // style={{ backgroundImage: `url("./looker2.jpg");` }}
+        >
           <img src="./looker2.jpg" />
         </div>
         {/* Form Section */}
@@ -92,7 +97,11 @@ export default function AuthPage() {
                 />
 
                 {/* Submit Button */}
-                <Button type="submit" variant="default" className="mt-4">
+                <Button
+                  type="submit"
+                  variant="default"
+                  className="mt-4 !bg-[#ea580c] hover:!bg-[#ea5a0ce1]"
+                >
                   Sign In
                 </Button>
 

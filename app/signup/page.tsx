@@ -129,6 +129,19 @@ export default function AuthPage() {
                 <Button type="submit" variant="default" className="mt-4">
                   {form.watch("confirmPassword") ? "Sign Up" : "Sign In"}
                 </Button>
+
+                {/*  */}
+
+                <div className="text-center mt-4">
+                  <p className="text-xs mt-2">
+                    Are you already{" "}
+                    <span className="text-primary">SignedUp?</span> Then Please{" "}
+                    <a href="/signin" className="text-primary underline">
+                      Click Here!
+                    </a>
+                    .
+                  </p>
+                </div>
               </form>
             </Form>
           </CardContent>

@@ -1,16 +1,22 @@
 import { Axios } from "@/utils/Axios";
 import { fail, success } from "@/utils/ToastMessages";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-
-let route = useRouter();
+import Cookies from "js-cookie";
+// let route = useRouter();
 
 export async function signIn(email: string, password: string) {
   try {
     const response = await Axios.post("/user/signin", { email, password });
     console.log(response.data);
-  } catch (error) {
+    const DATA = response.data.message;
+    Cookies.set("user", JSON.stringify(DATA.user));
+    Cookies.set("authToken", DATA.token);
+    success("User Logged-In Successfully");
+    window.location.href = "/";
+  } catch (error: any) {
     console.log(error);
+    fail(
+      error.response ? error.response.data.message : "Unknown Error Occured"
+    );
   }
 }
 
@@ -23,7 +29,8 @@ export async function signUp(email: string, password: string) {
       password,
     });
     success("User Created Successfully");
-    route.push("/signin");
+    // route.push("/signin");
+    window.location.href = "/signin";
     console.log(response.data);
   } catch (error: any) {
     console.log(error);
