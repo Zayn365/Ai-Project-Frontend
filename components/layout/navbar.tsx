@@ -29,6 +29,11 @@ import { logout } from "@/hooks/authHooks";
 interface RouteProps {
   href: string;
   label: string;
+  list: any[] | null;
+}
+interface RouteDropDownProps {
+  href: string;
+  label: string;
 }
 
 interface FeatureProps {
@@ -37,30 +42,29 @@ interface FeatureProps {
 }
 
 const routeList: RouteProps[] = [
-  // {
-  //   href: "#testimonials",
-  //   label: "Testimonials",
-  // },
   {
-    href: "/text-to-speech",
-    label: "Text-To-Speech",
-  },
-
-  // {
-  //   href: "#team",
-  //   label: "Team",
-  // },
-  {
-    href: "/blog",
-    label: "Blog",
+    href: "",
+    label: "Create",
+    list: [
+      {
+        href: "/text-to-speech",
+        label: "Text-To-Speech",
+      },
+      {
+        href: "/blog",
+        label: "Blog",
+      },
+    ],
   },
   {
     href: "#contact",
     label: "Contact",
+    list: null,
   },
   {
     href: "#faq",
     label: "FAQ",
+    list: null,
   },
 ];
 
@@ -84,10 +88,12 @@ const featureList: FeatureProps[] = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
-
+  const [isAiOpen, setIsAiOpen] = React.useState(false);
+  console.log("🚀 ~ Navbar ~ isAiOpen:", isAiOpen);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const { user } = useAppContext();
   const route = useRouter();
+
   return (
     <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
       <Link href="/" className="font-bold text-lg flex items-center">
@@ -119,16 +125,62 @@ export const Navbar = () => {
               </SheetHeader>
 
               <div className="flex flex-col gap-2">
-                {routeList.map(({ href, label }) => (
-                  <Button
-                    key={href}
-                    onClick={() => setIsOpen(false)}
-                    asChild
-                    variant="ghost"
-                    className="justify-start text-base"
-                  >
-                    <Link href={href}>{label}</Link>
-                  </Button>
+                {routeList.map(({ href, label, list }) => (
+                  <>
+                    <Button
+                      key={href}
+                      onClick={() => {
+                        console.log(
+                          "🚀 ~ Navbar ~ list?.length:",
+                          list?.length
+                        );
+                        list && list?.length > 0
+                          ? setIsAiOpen(!isAiOpen)
+                          : setIsOpen(false);
+                      }}
+                      asChild
+                      variant="ghost"
+                      onBlur={() => setTimeout(() => setIsAiOpen(false), 100)}
+                      className="justify-start text-base"
+                    >
+                      <Link href={href}>
+                        {label}{" "}
+                        {list && list?.length > 0 ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="w-5 h-5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        ) : (
+                          ""
+                        )}
+                      </Link>
+                    </Button>
+                    {isAiOpen
+                      ? list && (
+                          <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#2e2e2e] shadow-lg rounded-md py-1 z-50">
+                            {list.map((val, key) => (
+                              <Link
+                                key={key}
+                                href={val.href}
+                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#ea580c]"
+                              >
+                                {val.label}
+                              </Link>
+                            ))}
+                          </div>
+                        )
+                      : ""}
+                  </>
                 ))}
               </div>
             </div>
@@ -239,12 +291,62 @@ export const Navbar = () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            {routeList.map(({ href, label }) => (
-              <NavigationMenuLink key={href} asChild>
-                <Link href={href} className="text-base px-2">
-                  {label}
-                </Link>
-              </NavigationMenuLink>
+            {routeList.map(({ href, label, list }) => (
+              <>
+                <Button
+                  key={href}
+                  onClick={() => {
+                    console.log("🚀 ~ Navbar ~ list?.length:", list?.length);
+                    list && list?.length > 0
+                      ? setIsAiOpen(!isAiOpen)
+                      : setIsOpen(false);
+                  }}
+                  asChild
+                  variant="ghost"
+                  onBlur={() => setTimeout(() => setIsAiOpen(false), 100)}
+                  className="justify-start text-center align-middle"
+                >
+                  <Link href={href}>
+                    {label}{" "}
+                    {list && list?.length > 0 ? (
+                      <>
+                        {" "}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2"
+                          stroke="currentColor"
+                          className="w-3 h-3"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </Link>
+                </Button>
+                {isAiOpen
+                  ? list && (
+                      <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#2e2e2e] shadow-lg rounded-md py-1 z-50">
+                        {list.map((val, key) => (
+                          <Link
+                            key={key}
+                            href={val.href}
+                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#ea580c]"
+                          >
+                            {val.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )
+                  : ""}
+              </>
             ))}
           </NavigationMenuItem>
         </NavigationMenuList>
