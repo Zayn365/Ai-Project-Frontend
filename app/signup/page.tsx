@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,6 +37,7 @@ const signInUpSchema = z
   );
 
 export default function AuthPage() {
+  const [isSubmitiing, setIsSubmiting] = useState<boolean>(false);
   const form = useForm<z.infer<typeof signInUpSchema>>({
     resolver: zodResolver(signInUpSchema),
     defaultValues: {
@@ -46,8 +47,10 @@ export default function AuthPage() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof signInUpSchema>) => {
-    signUp(values.email, values.password);
+  const onSubmit = async (values: z.infer<typeof signInUpSchema>) => {
+    setIsSubmiting(true);
+    await signUp(values.email, values.password);
+    setIsSubmiting(false);
     // console.log(values);
   };
 
@@ -126,8 +129,13 @@ export default function AuthPage() {
                 )}
 
                 {/* Submit Button */}
-                <Button type="submit" variant="default" className="mt-4">
-                  {form.watch("confirmPassword") ? "Sign Up" : "Sign In"}
+                <Button
+                  type="submit"
+                  disabled={isSubmitiing}
+                  variant="default"
+                  className="mt-4"
+                >
+                  Sign Up
                 </Button>
 
                 {/*  */}

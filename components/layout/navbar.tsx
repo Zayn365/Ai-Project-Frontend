@@ -88,7 +88,6 @@ export const Navbar = () => {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const { user } = useAppContext();
   const route = useRouter();
-
   return (
     <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
       <Link href="/" className="font-bold text-lg flex items-center">
@@ -137,7 +136,49 @@ export const Navbar = () => {
             <SheetFooter className="flex-col sm:flex-col justify-start items-start">
               <Separator className="mb-2" />
               {user ? (
-                user?.username
+                <>
+                  <button
+                    onClick={toggleDropdown}
+                    onBlur={() =>
+                      setTimeout(() => setIsDropdownOpen(false), 100)
+                    }
+                    className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-[#2e2e2e] rounded-md"
+                  >
+                    <span>{user?.username}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#2e2e2e] shadow-lg rounded-md py-1 z-50">
+                      <Link
+                        href="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#ea580c]"
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout();
+                        }}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#ea580c]"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <Button
                   size="sm"
@@ -225,8 +266,8 @@ export const Navbar = () => {
           <>
             <button
               onClick={toggleDropdown}
-              onBlur={() => setIsDropdownOpen(false)}
-              className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+              onBlur={() => setTimeout(() => setIsDropdownOpen(false), 100)}
+              className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-[#2e2e2e] rounded-md"
             >
               <span>{user?.username}</span>
               <svg
@@ -245,10 +286,10 @@ export const Navbar = () => {
               </svg>
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md py-1 z-50">
+              <div className="absolute right-0 mt-10 w-48 bg-white dark:bg-[#2e2e2e] shadow-lg rounded-md py-1 z-50">
                 <Link
                   href="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#ea580c]"
                 >
                   Profile
                 </Link>
@@ -256,7 +297,7 @@ export const Navbar = () => {
                   onClick={() => {
                     logout();
                   }}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#ea580c]"
                 >
                   Logout
                 </button>
