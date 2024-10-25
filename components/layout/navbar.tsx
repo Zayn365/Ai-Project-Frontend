@@ -54,6 +54,22 @@ const routeList: RouteProps[] = [
         href: "/blog",
         label: "Blog",
       },
+      {
+        href: "/ebook",
+        label: "Ebook",
+      },
+      {
+        href: "/music",
+        label: "Music",
+      },
+      {
+        href: "/imageAi",
+        label: "Image Generate",
+      },
+      {
+        href: "/storytelling",
+        label: "Storytelling",
+      },
     ],
   },
   {
@@ -89,7 +105,6 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isAiOpen, setIsAiOpen] = React.useState(false);
-  console.log("🚀 ~ Navbar ~ isAiOpen:", isAiOpen);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const { user } = useAppContext();
   const route = useRouter();
@@ -303,7 +318,7 @@ export const Navbar = () => {
                   }}
                   asChild
                   variant="ghost"
-                  onBlur={() => setTimeout(() => setIsAiOpen(false), 100)}
+                  onBlur={() => setTimeout(() => setIsAiOpen(false), 300)}
                   className="justify-start text-center align-middle"
                 >
                   <Link href={href}>
@@ -355,7 +370,7 @@ export const Navbar = () => {
       <div className="hidden lg:flex">
         <ToggleTheme />
 
-        <Button asChild size="sm" variant="ghost" aria-label="View on GitHub">
+        {/* <Button asChild size="sm" variant="ghost" aria-label="View on GitHub">
           <Link
             aria-label="View on GitHub"
             href="https://github.com/nobruf/shadcn-landing-page.git"
@@ -363,7 +378,7 @@ export const Navbar = () => {
           >
             <Github className="size-5" />
           </Link>
-        </Button>
+        </Button> */}
         {user ? (
           <>
             <button
