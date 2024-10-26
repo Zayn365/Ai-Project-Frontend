@@ -20,12 +20,11 @@ const formAiSchema = z.object({
 });
 
 export default function Page() {
-  const [submittedData, setSubmittedData] = useState<z.infer<
-    typeof formSchema
-  > | null>(null);
+  const [submittedData, setSubmittedData] = useState<any | null>(null);
   const [aiData, setAiData] = useState<z.infer<typeof formAiSchema> | null>(
     null
   );
+  const [message, setMessage] = useState<any>();
   const [isAI, setIsAi] = useState<boolean>(false);
 
   async function handleBlogSubmit(values: z.infer<typeof formSchema>) {
@@ -33,7 +32,7 @@ export default function Page() {
     await Axios.post("/blog", { title: values.title, content: values.body })
       .then((res) => {
         console.log(res);
-        setSubmittedData(values);
+        setMessage(res.data);
         success("Successfully Created");
       })
       .catch((err) => {
@@ -42,12 +41,13 @@ export default function Page() {
       });
   }
 
+  console.log("🚀 ~ Page ~ message:", message);
   async function handleAiBlogSubmit(values: z.infer<typeof formAiSchema>) {
     console.log("AI Blog submitted: ", values);
     await Axios.post("/blog/ai", values)
       .then((res) => {
         console.log(res);
-        setAiData(values);
+        setMessage(res.data);
         success("Successfully Created");
       })
       .catch((err) => {
@@ -98,7 +98,7 @@ export default function Page() {
               <h3 className="text-xl font-bold mb-2">
                 {submittedData ? submittedData?.title : "Results:"}
               </h3>
-              <p>{submittedData ? submittedData?.body : aiData?.prompt}</p>
+              <p>{message ? message?.message : aiData?.prompt}</p>
             </CardContent>
           </Card>
         )}
