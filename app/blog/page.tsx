@@ -89,7 +89,7 @@ export default function Page() {
 
       {/* Section to display the submitted blog data */}
       <section className="container pt-5 sm:pt-15">
-        {(submittedData || aiData) && (
+        {(submittedData || message) && (
           <Card className="bg-muted/60 dark:bg-card mt-8">
             <CardHeader className="text-primary text-2xl">
               Submitted Blog
