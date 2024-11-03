@@ -23,7 +23,22 @@ import { useState } from "react";
 
 const formAiEbookSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
-  content: z.string().min(10, "Description must be at least 10 characters"),
+  theme: z.array(
+    z.enum([
+      "Drama",
+      "Thriller",
+      "Tragic",
+      "Adventure",
+      "Comedy",
+      "Horror",
+      "Gore",
+    ]),
+    { required_error: "Please select at least one theme" }
+  ),
+
+  audience: z.array(z.enum(["Adults", "Teens", "Children"]), {
+    required_error: "Please select at least one audience",
+  }),
 });
 
 export function AiEbookForm({
@@ -37,7 +52,8 @@ export function AiEbookForm({
     resolver: zodResolver(formAiEbookSchema),
     defaultValues: {
       title: "",
-      content: "",
+      theme: [],
+      audience: [],
     },
   });
 
@@ -72,23 +88,83 @@ export function AiEbookForm({
                 </FormItem>
               )}
             />
+
             <FormField
               control={formAi.control}
-              name="content"
+              name="theme"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Theme</FormLabel>
                   <FormControl>
-                    <Input
-                      type="textarea"
-                      placeholder="Enter the ebook content"
-                      {...field}
-                    />
+                    <div className="grid gap-2">
+                      {[
+                        "Drama",
+                        "Thriller",
+                        "Tragic",
+                        "Adventure",
+                        "Comedy",
+                        "Horror",
+                        "Gore",
+                      ].map((option: any) => (
+                        <label
+                          key={option}
+                          className="flex items-center space-x-2"
+                        >
+                          <input
+                            type="checkbox"
+                            value={option}
+                            checked={field.value.includes(option)}
+                            onChange={() => {
+                              const newValue = field.value.includes(option)
+                                ? field.value.filter((item) => item !== option)
+                                : [...field.value, option];
+                              field.onChange(newValue);
+                            }}
+                          />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={formAi.control}
+              name="audience"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Audience</FormLabel>
+                  <FormControl>
+                    <div className="grid gap-2">
+                      {["Adults", "Teens", "Children"].map((option: any) => (
+                        <label
+                          key={option}
+                          className="flex items-center space-x-2"
+                        >
+                          <input
+                            type="checkbox"
+                            value={option}
+                            checked={field.value.includes(option)}
+                            onChange={() => {
+                              const newValue = field.value.includes(option)
+                                ? field.value.filter((item) => item !== option)
+                                : [...field.value, option];
+                              field.onChange(newValue);
+                            }}
+                          />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button
               type="submit"
               variant="default"
