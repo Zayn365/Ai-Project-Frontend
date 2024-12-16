@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
+// Update schema to include skillLevel
 const formAiEbookSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   theme: z.array(
@@ -35,9 +36,11 @@ const formAiEbookSchema = z.object({
     ]),
     { required_error: "Please select at least one theme" }
   ),
-
   audience: z.array(z.enum(["Adults", "Teens", "Children"]), {
     required_error: "Please select at least one audience",
+  }),
+  level: z.array(z.enum(["Beginner", "Intermediate", "Professional"]), {
+    required_error: "Please select a skill level",
   }),
 });
 
@@ -54,6 +57,7 @@ export function AiEbookForm({
       title: "",
       theme: [],
       audience: [],
+      level: [], // Default value for the select
     },
   });
 
@@ -158,6 +162,38 @@ export function AiEbookForm({
                           <span>{option}</span>
                         </label>
                       ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Add skill level select */}
+            <FormField
+              control={formAi.control}
+              name="level"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Skill Level</FormLabel>
+                  <FormControl>
+                    <div className="grid gap-2">
+                      {["Beginner", "Intermediate", "Professional"].map(
+                        (option: any) => (
+                          <label
+                            key={option}
+                            className="flex items-center space-x-2"
+                          >
+                            <input
+                              type="radio"
+                              value={option}
+                              checked={field.value[0] === option} // Since it's now a single value, use the first element to compare
+                              onChange={() => field.onChange([option])} // Wrap the selected value in an array
+                            />
+                            <span>{option}</span>
+                          </label>
+                        )
+                      )}
                     </div>
                   </FormControl>
                   <FormMessage />
