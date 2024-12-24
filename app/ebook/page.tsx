@@ -34,7 +34,7 @@ export default function AiEbookPage() {
           title: values.title,
           audience: `${values.audience.concat()}`,
           theme: `${values.theme.concat()}`,
-          level: values.level[0].toLowerCase(),
+          level: values.level.toLowerCase(),
         },
       });
       const image = await Axios.post("/images/ai", {
