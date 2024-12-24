@@ -37,7 +37,7 @@ export const formAiEbookSchema = z.object({
   audience: z.array(z.enum(["Adults", "Teens", "Children"]), {
     required_error: "Please select at least one audience",
   }),
-  level: z.array(z.enum(["Beginner", "Intermediate", "Professional"]), {
+  level: z.enum(["Beginner", "Intermediate", "Professional"], {
     required_error: "Please select a skill level",
   }),
   size: z.enum(["256x256", "512x512", "1024x1024"], {
@@ -62,7 +62,7 @@ export function AiEbookForm({
       title: "",
       theme: [],
       audience: [],
-      level: [],
+      level: "Beginner",
       size: "256x256",
       noOfImagesL: 1,
       imagesurl: {
@@ -192,7 +192,7 @@ export function AiEbookForm({
                   <FormControl>
                     <div className="grid gap-2">
                       {["Beginner", "Intermediate", "Professional"].map(
-                        (option: any) => (
+                        (option) => (
                           <label
                             key={option}
                             className="flex items-center space-x-2"
@@ -200,8 +200,9 @@ export function AiEbookForm({
                             <input
                               type="radio"
                               value={option}
-                              checked={field.value[0] === option} // Since it's now a single value, use the first element to compare
-                              onChange={() => field.onChange([option])} // Wrap the selected value in an array
+                              // @ts-ignore
+                              checked={field.value === option}
+                              onChange={() => field.onChange(option)}
                             />
                             <span>{option}</span>
                           </label>
@@ -213,6 +214,7 @@ export function AiEbookForm({
                 </FormItem>
               )}
             />
+
             {/* Size Field */}
             <FormField
               control={formAi.control}

@@ -24,6 +24,10 @@ export default function AiEbookPage() {
   const [content, setContent] = useState<String>("");
   const [images, setImages] = useState<string[]>([]);
   async function handleSubmit(values: z.infer<typeof formAiEbookSchema>) {
+    if ((values.audience.length && values.theme) === 0) {
+      fail("Please Define All Values");
+      return;
+    }
     try {
       const res = await Axios.post("/ebook/ai", {
         prompt: {
