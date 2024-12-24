@@ -21,7 +21,6 @@ export default function AiStoryPage() {
     console.log("AI Story submitted: ", values);
     try {
       const res = await Axios.post("/story", values);
-      console.log(res);
       setSubmittedData(values);
       success("Successfully Created");
     } catch (err) {

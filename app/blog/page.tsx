@@ -29,7 +29,6 @@ export default function Page() {
         title: values.title,
         content: values.body,
       });
-      console.log("🚀 ~ handleBlogSubmit ~ res:", res);
       setSubmittedData(res.data?.message);
       success("Successfully Created");
     } catch (err: any) {

@@ -40,7 +40,7 @@ export const formAiEbookSchema = z.object({
   level: z.array(z.enum(["Beginner", "Intermediate", "Professional"]), {
     required_error: "Please select a skill level",
   }),
-  size: z.enum(["256x256", "512x512", "1024x1024", "1024x1792", "1792x1024"], {
+  size: z.enum(["256x256", "512x512", "1024x1024"], {
     required_error: "Please select an image size",
   }),
   noOfImagesL: z.number().optional(),
