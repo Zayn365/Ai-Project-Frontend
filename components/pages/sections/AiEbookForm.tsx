@@ -1,4 +1,3 @@
-// components/AiEbookForm.tsx
 "use client";
 import {
   Card,
@@ -21,8 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-// Update schema to include skillLevel
-const formAiEbookSchema = z.object({
+export const formAiEbookSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   theme: z.array(
     z.enum([
@@ -42,6 +40,13 @@ const formAiEbookSchema = z.object({
   level: z.array(z.enum(["Beginner", "Intermediate", "Professional"]), {
     required_error: "Please select a skill level",
   }),
+  size: z.enum(["256x256", "512x512", "1024x1024", "1024x1792", "1792x1024"], {
+    required_error: "Please select an image size",
+  }),
+  noOfImagesL: z.number().optional(),
+  imagesurl: z.object({
+    url: z.array(z.string().url()).optional(),
+  }),
 });
 
 export function AiEbookForm({
@@ -57,7 +62,15 @@ export function AiEbookForm({
       title: "",
       theme: [],
       audience: [],
-      level: [], // Default value for the select
+      level: [],
+      size: "256x256",
+      noOfImagesL: 1,
+      imagesurl: {
+        url: [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gaMRRUjOO72xhoR0E4gIU4wulCZLdHSM_A&s",
+          "https://google.com",
+        ],
+      },
     },
   });
 
@@ -195,6 +208,80 @@ export function AiEbookForm({
                         )
                       )}
                     </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Size Field */}
+            <FormField
+              control={formAi.control}
+              name="size"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image Size</FormLabel>
+                  <FormControl>
+                    <select
+                      className="border border-[#292524] bg-[#121212] rounded px-4 py-2 w-full"
+                      value={field.value}
+                      onChange={field.onChange}
+                    >
+                      <option value="" disabled>
+                        Select image size
+                      </option>
+                      {[
+                        "256x256",
+                        "512x512",
+                        "1024x1024",
+                        "1024x1792",
+                        "1792x1024",
+                      ].map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Number of Images
+            <FormField
+              control={formAi.control}
+              name="noOfImagesL"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Number of Images</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter the number of images"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+
+            {/* Images URL */}
+            <FormField
+              control={formAi.control}
+              name="imagesurl.url"
+              render={({ field }: any) => (
+                <FormItem>
+                  <FormLabel>Image URLs</FormLabel>
+                  <FormControl>
+                    <textarea
+                      placeholder="Enter image URLs, one per line"
+                      value={field.value.join("\n")}
+                      onChange={(e) =>
+                        field.onChange(e.target.value.split("\n"))
+                      }
+                      className="w-full h-24 p-2 border rounded"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

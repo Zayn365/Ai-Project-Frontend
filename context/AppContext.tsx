@@ -34,9 +34,6 @@ const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     authToken,
     setAuthtoken,
   };
-  console.log("🚀 ~ values.authToken:", values.authToken);
-  console.log("🚀 ~ values.user:", values.user);
-
   return (
     // @ts-ignore
     <AppContextValue.Provider value={values}>

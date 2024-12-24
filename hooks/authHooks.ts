@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 export async function signIn(email: string, password: string) {
   try {
     const response = await Axios.post("/user/signin", { email, password });
-    console.log(response.data);
+
     const DATA = response.data.message;
     Cookies.set("user", JSON.stringify(DATA.user));
     Cookies.set("authToken", DATA.token);
@@ -31,7 +31,6 @@ export async function signUp(email: string, password: string) {
     success("User Created Successfully");
     // route.push("/signin");
     window.location.href = "/signin";
-    console.log(response.data);
   } catch (error: any) {
     console.log(error);
     fail(
@@ -42,7 +41,6 @@ export async function signUp(email: string, password: string) {
 
 export async function logout() {
   try {
-    console.log("YOYOY");
     Cookies.remove("user");
     Cookies.remove("authToken");
     success("Logged Out Successfully");

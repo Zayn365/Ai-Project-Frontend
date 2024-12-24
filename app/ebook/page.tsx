@@ -1,10 +1,14 @@
 "use client";
 import { useState } from "react";
-import { AiEbookForm } from "@/components/pages/sections/AiEbookForm";
+import {
+  AiEbookForm,
+  formAiEbookSchema,
+} from "@/components/pages/sections/AiEbookForm";
 import { z } from "zod";
 import { success, fail } from "@/utils/ToastMessages";
 import { Axios } from "@/utils/Axios";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Image from "next/image";
 
 type ebookSchema = {
   theme:
@@ -12,36 +16,15 @@ type ebookSchema = {
   title: String;
   content: String;
   audience: ["Adults", "Teens", "Children"];
-  difficulty: "Beginner" | "Intermediate" | "Professional";
+  level: "Beginner" | "Intermediate" | "Professional";
 };
-
-const ebookSchemaSubmit = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters"),
-  theme: z.array(
-    z.enum([
-      "Drama",
-      "Thriller",
-      "Tragic",
-      "Adventure",
-      "Comedy",
-      "Horror",
-      "Gore",
-    ]),
-    { required_error: "Please select at least one theme" }
-  ),
-  audience: z.array(z.enum(["Adults", "Teens", "Children"]), {
-    required_error: "Please select at least one audience",
-  }),
-  level: z.array(z.enum(["Beginner", "Intermediate", "Professional"]), {
-    required_error: "Please select a skill level",
-  }),
-});
 
 export default function AiEbookPage() {
   const [submittedData, setSubmittedData] = useState<ebookSchema | null>(null);
   const [content, setContent] = useState<String>("");
-
-  async function handleSubmit(values: z.infer<typeof ebookSchemaSubmit>) {
+  const [images, setImages] = useState<string[]>([]);
+  async function handleSubmit(values: z.infer<typeof formAiEbookSchema>) {
+    console.log("🚀 ~ handleSubmit ~ values:", values);
     try {
       const res = await Axios.post("/ebook/ai", {
         prompt: {
@@ -51,6 +34,16 @@ export default function AiEbookPage() {
           level: values.level[0].toLowerCase(),
         },
       });
+      const image = await Axios.post("/images/ai", {
+        userId: 1,
+        imagedetails: {
+          title: values.title,
+          size: values.size,
+          noOfImagesL: 1,
+        },
+        imagesurl: { url: values.imagesurl },
+      });
+      setImages(image?.data?.message?.imagesurl?.url);
       setSubmittedData(values as any);
       setContent(res?.data?.message?.content);
       success("Successfully Created");
@@ -59,7 +52,6 @@ export default function AiEbookPage() {
       fail("Submission failed");
     }
   }
-
   return (
     <section className="container pt-24">
       <AiEbookForm onSubmit={handleSubmit} />
@@ -70,9 +62,21 @@ export default function AiEbookPage() {
           </CardHeader>
           <CardContent>
             <h3 className="text-xl font-bold">{submittedData.title}</h3>
+            <div className="flex justify-center">
+              {images?.length > 0 &&
+                images.map((item, key) => (
+                  <Image
+                    className="rounded-md"
+                    src={item}
+                    alt={`${key}`}
+                    width={500}
+                    height={500}
+                  />
+                ))}
+            </div>
             <p>Theme: {submittedData.theme}</p>
             <p>Audience: {submittedData.audience}</p>
-            <p>Difficulty: {submittedData.difficulty}</p>
+            <p>Difficulty: {submittedData.level}</p>
             <p>Ebook:</p>
             <p>{content ? content : "Sorry! Something went wrong"}</p>
           </CardContent>

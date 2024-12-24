@@ -39,7 +39,7 @@ export default function AuthPage() {
 
   const onSubmit = async (values: z.infer<typeof signInUpSchema>) => {
     setIsSubmiting(true);
-    console.log(values);
+
     await signIn(values.email, values.password);
     setIsSubmiting(false);
   };

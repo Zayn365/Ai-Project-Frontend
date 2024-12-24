@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 import { useState } from "react";
 import { BlogForm } from "@/components/pages/sections/createBlog";
@@ -21,46 +20,39 @@ const formAiSchema = z.object({
 
 export default function Page() {
   const [submittedData, setSubmittedData] = useState<any | null>(null);
-  const [aiData, setAiData] = useState<z.infer<typeof formAiSchema> | null>(
-    null
-  );
-  const [message, setMessage] = useState<any>();
+  const [message, setMessage] = useState<any>(null);
   const [isAI, setIsAi] = useState<boolean>(false);
 
   async function handleBlogSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Blog submitted: ", values);
-    await Axios.post("/blog", { title: values.title, content: values.body })
-      .then((res) => {
-        console.log(res);
-        setMessage(res.data);
-        success("Successfully Created");
-      })
-      .catch((err) => {
-        console.log(err);
-        fail(err.message);
+    try {
+      const res = await Axios.post("/blog", {
+        title: values.title,
+        content: values.body,
       });
+      console.log("🚀 ~ handleBlogSubmit ~ res:", res);
+      setSubmittedData(res.data?.message);
+      success("Successfully Created");
+    } catch (err: any) {
+      fail(err.message || "An error occurred while creating the blog.");
+      console.error(err);
+    }
   }
 
-  console.log("🚀 ~ Page ~ message:", message);
   async function handleAiBlogSubmit(values: z.infer<typeof formAiSchema>) {
-    console.log("AI Blog submitted: ", values);
-    await Axios.post("/blog/ai", values)
-      .then((res) => {
-        console.log(res);
-        setMessage(res.data);
-        success("Successfully Created");
-      })
-      .catch((err) => {
-        console.log(err);
-        aiError(err);
-        // fail(err.message);
-      });
+    try {
+      const res = await Axios.post("/blog/ai", values);
+      setMessage(res.data);
+      success("Successfully Created");
+    } catch (err: any) {
+      aiError(err);
+      console.error(err);
+    }
   }
 
   return (
     <>
+      {/* Toggle Buttons */}
       <section className="container pt-24 sm:pt-32">
-        {/* Toggle Buttons */}
         <div className="flex justify-center gap-4 mb-8">
           <Button
             variant={isAI ? "outline" : "default"}
@@ -77,32 +69,31 @@ export default function Page() {
         </div>
       </section>
 
-      {isAI ? (
-        <section className="container pt-t sm:pt-10">
+      {/* Form Section */}
+      <section className="container pt-t sm:pt-10">
+        {isAI ? (
           <AiBlogForm onSubmit={handleAiBlogSubmit} />
-        </section>
-      ) : (
-        <section className="container pt-t sm:pt-10">
+        ) : (
           <BlogForm onSubmit={handleBlogSubmit} />
-        </section>
-      )}
+        )}
+      </section>
 
-      {/* Section to display the submitted blog data */}
-      <section className="container pt-5 sm:pt-15">
-        {(submittedData || message) && (
+      {/* Display Submitted Blog Data */}
+      {(submittedData || message) && (
+        <section className="container pt-5 sm:pt-15">
           <Card className="bg-muted/60 dark:bg-card mt-8">
             <CardHeader className="text-primary text-2xl">
               Submitted Blog
             </CardHeader>
             <CardContent>
               <h3 className="text-xl font-bold mb-2">
-                {submittedData ? submittedData?.title : "Results:"}
+                {isAI ? "AI Blog Results" : submittedData?.title}
               </h3>
-              <p>{message ? message?.message : aiData?.prompt}</p>
+              <p>{isAI ? message?.message : submittedData?.content}</p>
             </CardContent>
           </Card>
-        )}
-      </section>
+        </section>
+      )}
     </>
   );
 }
