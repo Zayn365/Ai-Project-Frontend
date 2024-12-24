@@ -65,6 +65,7 @@ export default function AiEbookPage() {
               {images?.length > 0 &&
                 images.map((item, key) => (
                   <Image
+                    key={key}
                     className="rounded-md"
                     src={item}
                     alt={`${key}`}
