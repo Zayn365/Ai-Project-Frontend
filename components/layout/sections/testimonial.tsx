@@ -17,7 +17,6 @@ import {
 import { Star } from "lucide-react";
 
 interface ReviewProps {
-  image: string;
   name: string;
   userName: string;
   comment: string;
@@ -26,15 +25,15 @@ interface ReviewProps {
 
 const reviewList: ReviewProps[] = [
   {
-    image: "https://github.com/shadcn.png",
+  
     name: "John Doe",
     userName: "Product Manager",
     comment:
-      "Wow NextJs + Shadcn is awesome!. This template lets me change colors, fonts and images to match my brand identity. ",
+      "Wow NextJs + Ai generator  is awesome!. This template lets me change colors, fonts and images to match my brand identity. ",
     rating: 5.0,
   },
   {
-    image: "https://github.com/shadcn.png",
+  
     name: "Sophia Collins",
     userName: "Cybersecurity Analyst",
     comment:
@@ -43,7 +42,7 @@ const reviewList: ReviewProps[] = [
   },
 
   {
-    image: "https://github.com/shadcn.png",
+  
     name: "Adam Johnson",
     userName: "Chief Technology Officer",
     comment:
@@ -51,7 +50,7 @@ const reviewList: ReviewProps[] = [
     rating: 4.9,
   },
   {
-    image: "https://github.com/shadcn.png",
+  
     name: "Ethan Parker",
     userName: "Data Scientist",
     comment:
@@ -59,7 +58,7 @@ const reviewList: ReviewProps[] = [
     rating: 5.0,
   },
   {
-    image: "https://github.com/shadcn.png",
+  
     name: "Ava Mitchell",
     userName: "IT Project Manager",
     comment:
@@ -67,7 +66,7 @@ const reviewList: ReviewProps[] = [
     rating: 5.0,
   },
   {
-    image: "https://github.com/shadcn.png",
+  
     name: "Isabella Reed",
     userName: "DevOps Engineer",
     comment:

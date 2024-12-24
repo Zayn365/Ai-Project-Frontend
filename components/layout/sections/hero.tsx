@@ -23,7 +23,7 @@ export const HeroSection = () => {
             <h1>
               Experience the{" "}
               <span className="text-transparent px-2 bg-gradient-to-r from-[#D247BF] to-primary bg-clip-text">
-                Shadcn AI Ecommerce
+              AI Generator  Ecommerce
               </span>
               Platform
             </h1>
@@ -46,7 +46,7 @@ export const HeroSection = () => {
               className="w-5/6 md:w-1/4 font-bold"
             >
               <Link
-                href="https://github.com/nobruf/shadcn-landing-page.git"
+                href="#"
                 target="_blank"
               >
                 Github respository

@@ -9,8 +9,8 @@ import AppContextProvider from "@/context/AppContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Shadcn - Landing template",
-  description: "Landing template from Shadcn",
+  title: "Ai generator  - Landing template",
+  description: "Landing template from Ai generator",
 };
 
 export default function RootLayout({
