@@ -1,5 +1,8 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +40,17 @@ const signInUpSchema = z
   );
 
 export default function AuthPage() {
-  const [isSubmitiing, setIsSubmiting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      offset: 100,
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
+
   const form = useForm<z.infer<typeof signInUpSchema>>({
     resolver: zodResolver(signInUpSchema),
     defaultValues: {
@@ -48,24 +61,38 @@ export default function AuthPage() {
   });
 
   const onSubmit = async (values: z.infer<typeof signInUpSchema>) => {
-    setIsSubmiting(true);
+    setIsSubmitting(true);
     await signUp(values.email, values.password);
-    setIsSubmiting(false);
-    // console.log(values);
+    setIsSubmitting(false);
   };
 
   return (
     <section className="container pt-24 sm:pt-32 flex justify-center">
-      <div className="flex flex-col sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden">
+      <div
+        className="flex flex-col sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden"
+        data-aos="fade-up"
+      >
         {/* Image Section */}
-        <div className="hidden sm:flex w-full sm:w-1/2 bg-cover bg-center">
-          <img src="./looker.jpg" />
+        <div
+          className="hidden sm:flex w-full sm:w-1/2 bg-cover bg-center"
+          data-aos="fade-right"
+          data-aos-delay="200"
+        >
+          <img src="./looker.jpg" alt="SignUp Illustration" />
         </div>
 
         {/* Form Section */}
-        <Card className="w-full sm:w-1/2">
-          <CardHeader className="text-primary text-3xl font-bold !underline text-center">
-            SignUp
+        <Card
+          className="w-full sm:w-1/2"
+          data-aos="fade-left"
+          data-aos-delay="300"
+        >
+          <CardHeader
+            className="text-primary text-3xl font-bold !underline text-center"
+            data-aos="zoom-in"
+            data-aos-delay="400"
+          >
+            Sign Up
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -78,7 +105,7 @@ export default function AuthPage() {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem data-aos="fade-up" data-aos-delay="500">
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter your email" {...field} />
@@ -93,7 +120,7 @@ export default function AuthPage() {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem data-aos="fade-up" data-aos-delay="600">
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
@@ -113,7 +140,7 @@ export default function AuthPage() {
                     control={form.control}
                     name="confirmPassword"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem data-aos="fade-up" data-aos-delay="700">
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
                           <Input
@@ -131,19 +158,23 @@ export default function AuthPage() {
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  disabled={isSubmitiing}
+                  disabled={isSubmitting}
                   variant="default"
-                  className="mt-4"
+                  className="mt-4 !bg-[#ea580c]"
+                  data-aos="zoom-in"
+                  data-aos-delay="800"
                 >
                   Sign Up
                 </Button>
 
-                {/*  */}
-
-                <div className="text-center mt-4">
+                <div
+                  className="text-center mt-4"
+                  data-aos="fade-in"
+                  data-aos-delay="900"
+                >
                   <p className="text-xs mt-2">
                     Are you already{" "}
-                    <span className="text-primary">SignedUp?</span> Then Please{" "}
+                    <span className="text-primary">Signed Up?</span> Then Please{" "}
                     <a href="/signin" className="text-primary underline">
                       Click Here!
                     </a>

@@ -1,5 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "@/hooks/authHooks";
@@ -29,6 +31,16 @@ const signInUpSchema = z.object({
 
 export default function AuthPage() {
   const [isSubmitiing, setIsSubmiting] = useState<boolean>(false);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration
+      offset: 100, // Offset for triggering animations
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
+
   const form = useForm<z.infer<typeof signInUpSchema>>({
     resolver: zodResolver(signInUpSchema),
     defaultValues: {
@@ -46,16 +58,25 @@ export default function AuthPage() {
 
   return (
     <section className="container pt-24 sm:pt-32 flex justify-center">
-      <div className="flex flex-wrap justify-between sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden">
+      <div
+        className="flex flex-wrap justify-between sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden"
+        data-aos="fade-up"
+      >
         {/* Image Section */}
         <div
           className="hidden sm:flex w-full sm:w-1/2 bg-cover bg-center"
-          // style={{ backgroundImage: `url("./looker2.jpg");` }}
+          data-aos="fade-right"
+          data-aos-delay="200"
         >
-          <img src="./looker2.jpg" />
+          <img src="./looker2.jpg" alt="Auth Illustration" />
         </div>
+
         {/* Form Section */}
-        <Card className="w-full sm:w-1/2">
+        <Card
+          className="w-full sm:w-1/2"
+          data-aos="fade-left"
+          data-aos-delay="300"
+        >
           <CardHeader className="text-primary text-3xl font-bold !underline text-center">
             Sign In
           </CardHeader>
@@ -70,7 +91,7 @@ export default function AuthPage() {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem data-aos="fade-up" data-aos-delay="400">
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter your email" {...field} />
@@ -85,7 +106,7 @@ export default function AuthPage() {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem data-aos="fade-up" data-aos-delay="500">
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
@@ -105,12 +126,14 @@ export default function AuthPage() {
                   variant="default"
                   disabled={isSubmitiing}
                   className="mt-4 !bg-[#ea580c] hover:!bg-[#ea5a0ce1]"
+                  data-aos="zoom-in"
+                  data-aos-delay="600"
                 >
-                  Sign In
+                  {isSubmitiing ? "Submitting..." : "Sign In"}
                 </Button>
 
                 {/* Forget Password and Terms Text */}
-                <div className="text-center mt-4">
+                <div className="text-center mt-4" data-aos="fade-in">
                   <a
                     href="/forgot-password"
                     className="text-sm text-primary underline"
@@ -135,7 +158,7 @@ export default function AuthPage() {
             </Form>
           </CardContent>
           <CardFooter></CardFooter>
-        </Card>{" "}
+        </Card>
       </div>
     </section>
   );

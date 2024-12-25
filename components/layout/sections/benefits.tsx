@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { icons } from "lucide-react";
@@ -36,10 +41,20 @@ const benefitList: BenefitsProps[] = [
 ];
 
 export const BenefitsSection = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration
+      once: true, // Trigger animation only once
+    });
+  }, []);
+
   return (
     <section id="benefits" className="container py-24 sm:py-32">
-      <div className="grid lg:grid-cols-2 place-items-center lg:gap-24">
-        <div>
+      <div
+        className="grid lg:grid-cols-2 place-items-center lg:gap-24"
+        data-aos="fade-up"
+      >
+        <div data-aos="fade-right">
           <h2 className="text-lg text-primary mb-2 tracking-wider">Benefits</h2>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -52,11 +67,17 @@ export const BenefitsSection = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-4 w-full">
+        <div
+          className="grid lg:grid-cols-2 gap-4 w-full"
+          data-aos="fade-left"
+          data-aos-delay="200"
+        >
           {benefitList.map(({ icon, title, description }, index) => (
             <Card
               key={title}
               className="bg-muted/50 dark:bg-card hover:bg-background transition-all delay-75 group/number"
+              data-aos="zoom-in"
+              data-aos-delay={index * 100 + 300} // Stagger animations
             >
               <CardHeader>
                 <div className="flex justify-between">

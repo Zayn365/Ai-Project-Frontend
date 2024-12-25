@@ -1,4 +1,8 @@
 "use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   Card,
   CardContent,
@@ -37,6 +41,13 @@ const formSchema = z.object({
 });
 
 export const ContactSection = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,8 +69,11 @@ export const ContactSection = () => {
 
   return (
     <section id="contact" className="container py-24 sm:py-32">
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
+      <section
+        className="grid grid-cols-1 md:grid-cols-2 gap-8"
+        data-aos="fade-up"
+      >
+        <div data-aos="fade-right">
           <div className="mb-4">
             <h2 className="text-lg text-primary mb-2 tracking-wider">
               Contact
@@ -105,7 +119,6 @@ export const ContactSection = () => {
                 <Clock />
                 <div className="font-bold">Visit us</div>
               </div>
-
               <div>
                 <div>Monday - Friday</div>
                 <div>8AM - 4PM</div>
@@ -114,7 +127,11 @@ export const ContactSection = () => {
           </div>
         </div>
 
-        <Card className="bg-muted/60 dark:bg-card">
+        <Card
+          className="bg-muted/60 dark:bg-card"
+          data-aos="fade-left"
+          data-aos-delay="200"
+        >
           <CardHeader className="text-primary text-2xl"> </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -231,7 +248,9 @@ export const ContactSection = () => {
                   />
                 </div>
 
-                <Button className="mt-4">Send message</Button>
+                <Button className="mt-4" type="submit">
+                  Send message
+                </Button>
               </form>
             </Form>
           </CardContent>

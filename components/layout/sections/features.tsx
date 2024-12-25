@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { icons } from "lucide-react";
@@ -48,25 +53,47 @@ const featureList: FeaturesProps[] = [
 ];
 
 export const FeaturesSection = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration
+      once: true, // Trigger animation only once
+    });
+  }, []);
+
   return (
     <section id="features" className="container py-24 sm:py-32">
-      <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
+      <h2
+        className="text-lg text-primary text-center mb-2 tracking-wider"
+        data-aos="fade-down"
+      >
         Features
       </h2>
 
-      <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
+      <h2
+        className="text-3xl md:text-4xl text-center font-bold mb-4"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
         What Makes Us Different
       </h2>
 
-      <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground mb-8">
+      <h3
+        className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground mb-8"
+        data-aos="fade-up"
+        data-aos-delay="300"
+      >
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem
         fugiat, odit similique quasi sint reiciendis quidem iure veritatis optio
         facere tenetur.
       </h3>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featureList.map(({ icon, title, description }) => (
-          <div key={title}>
+      <div
+        className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        data-aos="fade-up"
+        data-aos-delay="400"
+      >
+        {featureList.map(({ icon, title, description }, index) => (
+          <div key={title} data-aos="zoom-in" data-aos-delay={index * 100 + 500}>
             <Card className="h-full bg-background border-0 shadow-none">
               <CardHeader className="flex justify-center items-center">
                 <div className="bg-primary/20 p-2 rounded-full ring-8 ring-primary/10 mb-4">

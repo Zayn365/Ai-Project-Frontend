@@ -1,4 +1,8 @@
 "use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
@@ -76,9 +80,20 @@ const reviewList: ReviewProps[] = [
 ];
 
 export const TestimonialSection = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
-    <section id="testimonials" className="container py-24 sm:py-32">
-      <div className="text-center mb-8">
+    <section
+      id="testimonials"
+      className="container py-24 sm:py-32"
+      data-aos="fade-up"
+    >
+      <div className="text-center mb-8" data-aos="fade-down">
         <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
           Testimonials
         </h2>
@@ -95,19 +110,26 @@ export const TestimonialSection = () => {
         className="relative w-[80%] sm:w-[90%] lg:max-w-screen-xl mx-auto"
       >
         <CarouselContent>
-          {reviewList.map((review) => (
+          {reviewList.map((review, index) => (
             <CarouselItem
               key={review.name}
               className="md:basis-1/2 lg:basis-1/3"
+              data-aos="zoom-in"
+              data-aos-delay={index * 100 + 200}
             >
               <Card className="bg-muted/50 dark:bg-card">
                 <CardContent className="pt-6 pb-0">
                   <div className="flex gap-1 pb-6">
-                    <Star className="size-4 fill-primary text-primary" />
-                    <Star className="size-4 fill-primary text-primary" />
-                    <Star className="size-4 fill-primary text-primary" />
-                    <Star className="size-4 fill-primary text-primary" />
-                    <Star className="size-4 fill-primary text-primary" />
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`size-4 ${
+                          i < Math.round(review.rating)
+                            ? "fill-primary text-primary"
+                            : "fill-muted text-muted"
+                        }`}
+                      />
+                    ))}
                   </div>
                   {`"${review.comment}"`}
                 </CardContent>

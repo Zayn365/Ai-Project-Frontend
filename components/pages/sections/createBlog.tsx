@@ -1,5 +1,7 @@
-// components/BlogForm.tsx
 "use client";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   Card,
   CardContent,
@@ -34,6 +36,15 @@ export function BlogForm({
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration
+      offset: 100, // Offset from element for triggering animation
+      easing: "ease-in-out", // Easing for smooth animation
+      once: true, // Trigger animation only once
+    });
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,8 +63,17 @@ export function BlogForm({
   };
 
   return (
-    <Card className="bg-muted/60 dark:bg-card">
-      <CardHeader className="text-primary text-2xl">Create Blog</CardHeader>
+    <Card
+      className="bg-muted/60 dark:bg-card"
+      data-aos="fade-up" // Add animation for the card
+    >
+      <CardHeader
+        className="text-primary text-2xl"
+        data-aos="fade-down"
+        data-aos-delay="200" // Delay for sequential animation
+      >
+        Create Blog
+      </CardHeader>
       <CardContent>
         <Form {...form}>
           <form
@@ -65,7 +85,7 @@ export function BlogForm({
               control={form.control}
               name="title"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-right" data-aos-delay="400">
                   <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter the blog title" {...field} />
@@ -80,7 +100,7 @@ export function BlogForm({
               control={form.control}
               name="body"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-left" data-aos-delay="600">
                   <FormLabel>Body</FormLabel>
                   <FormControl>
                     <Textarea placeholder="Enter the blog content" {...field} />
@@ -96,6 +116,8 @@ export function BlogForm({
               variant="default"
               className="mt-4 !bg-[#ea580c]"
               disabled={isLoading}
+              data-aos="zoom-in"
+              data-aos-delay="800"
             >
               {isLoading ? "Submitting..." : "Submit Blog"}
             </Button>

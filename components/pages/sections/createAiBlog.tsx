@@ -1,5 +1,8 @@
-// components/AiBlogForm.tsx
 "use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   Card,
   CardContent,
@@ -32,6 +35,15 @@ export function AiBlogForm({
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      offset: 100,
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
+
   const formAi = useForm<z.infer<typeof formAiSchema>>({
     resolver: zodResolver(formAiSchema),
     defaultValues: {
@@ -49,8 +61,14 @@ export function AiBlogForm({
   };
 
   return (
-    <Card className="bg-muted/60 dark:bg-card">
-      <CardHeader className="text-primary text-2xl">Create AI Blog</CardHeader>
+    <Card className="bg-muted/60 dark:bg-card" data-aos="fade-up">
+      <CardHeader
+        className="text-primary text-2xl"
+        data-aos="fade-down"
+        data-aos-delay="200"
+      >
+        Create AI Blog
+      </CardHeader>
       <CardContent>
         <Form {...formAi}>
           <form
@@ -62,7 +80,7 @@ export function AiBlogForm({
               control={formAi.control}
               name="prompt"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-right" data-aos-delay="300">
                   <FormLabel>Prompt</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter the blog prompt" {...field} />
@@ -78,6 +96,8 @@ export function AiBlogForm({
               variant="default"
               className="mt-4 !bg-[#ea580c]"
               disabled={isLoading}
+              data-aos="zoom-in"
+              data-aos-delay="400"
             >
               {isLoading ? "Submitting..." : "Submit Blog"}
             </Button>

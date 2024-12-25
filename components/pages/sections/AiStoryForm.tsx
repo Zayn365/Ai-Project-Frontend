@@ -1,14 +1,12 @@
-// components/AiStoryForm.tsx
 "use client";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -18,8 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formAiStorySchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -32,6 +34,15 @@ export function AiStoryForm({
   onSubmit: (values: z.infer<typeof formAiStorySchema>) => Promise<void>;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      offset: 100,
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
 
   const formAi = useForm<z.infer<typeof formAiStorySchema>>({
     resolver: zodResolver(formAiStorySchema),
@@ -51,8 +62,14 @@ export function AiStoryForm({
   };
 
   return (
-    <Card className="bg-muted/60 dark:bg-card">
-      <CardHeader className="text-primary text-2xl">Create AI Story</CardHeader>
+    <Card className="bg-muted/60 dark:bg-card" data-aos="fade-up">
+      <CardHeader
+        className="text-primary text-2xl"
+        data-aos="fade-down"
+        data-aos-delay="200"
+      >
+        Create AI Story
+      </CardHeader>
       <CardContent>
         <Form {...formAi}>
           <form
@@ -64,7 +81,7 @@ export function AiStoryForm({
               control={formAi.control}
               name="title"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-right" data-aos-delay="300">
                   <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter the story title" {...field} />
@@ -79,7 +96,7 @@ export function AiStoryForm({
               control={formAi.control}
               name="prompt"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-left" data-aos-delay="400">
                   <FormLabel>Story Prompt</FormLabel>
                   <FormControl>
                     <Input
@@ -99,6 +116,8 @@ export function AiStoryForm({
               variant="default"
               className="mt-4 !bg-[#ea580c]"
               disabled={isLoading}
+              data-aos="zoom-in"
+              data-aos-delay="500"
             >
               {isLoading ? "Submitting..." : "Create Story"}
             </Button>

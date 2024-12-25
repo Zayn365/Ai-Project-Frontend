@@ -1,13 +1,11 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -17,8 +15,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 export const formAiEbookSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -83,9 +85,24 @@ export function AiEbookForm({
     }
   };
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      offset: 100,
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
+
   return (
-    <Card className="bg-muted/60 dark:bg-card">
-      <CardHeader className="text-primary text-2xl">Create AI Ebook</CardHeader>
+    <Card className="bg-muted/60 dark:bg-card" ata-aos="fade-up">
+      <CardHeader
+        className="text-primary text-2xl"
+        data-aos="fade-down"
+        data-aos-delay="200"
+      >
+        Create AI Ebook
+      </CardHeader>
       <CardContent>
         <Form {...formAi}>
           <form
@@ -96,7 +113,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="title"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-right" data-aos-delay="300"   >
                   <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter the ebook title" {...field} />
@@ -110,7 +127,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="theme"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-up" data-aos-delay="400">
                   <FormLabel>Theme</FormLabel>
                   <FormControl>
                     <div className="grid gap-2">
@@ -152,7 +169,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="audience"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-up" data-aos-delay="500">
                   <FormLabel>Audience</FormLabel>
                   <FormControl>
                     <div className="grid gap-2">
@@ -187,7 +204,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="level"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-up" data-aos-delay="600">
                   <FormLabel>Skill Level</FormLabel>
                   <FormControl>
                     <div className="grid gap-2">
@@ -220,7 +237,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="size"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-up" data-aos-delay="700">
                   <FormLabel>Image Size</FormLabel>
                   <FormControl>
                     <select
@@ -267,7 +284,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="imagesurl.url"
               render={({ field }: any) => (
-                <FormItem>
+                <FormItem data-aos="fade-up" data-aos-delay="900">
                   <FormLabel>Image URLs</FormLabel>
                   <FormControl>
                     <textarea
@@ -289,6 +306,8 @@ export function AiEbookForm({
               variant="default"
               className="mt-4 !bg-[#ea580c]"
               disabled={isLoading}
+              data-aos="fade-up"
+              data-aos-delay="900"
             >
               {isLoading ? "Submitting..." : "Create Ebook"}
             </Button>

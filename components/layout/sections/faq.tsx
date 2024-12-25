@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   Accordion,
   AccordionContent,
@@ -14,7 +19,7 @@ interface FAQProps {
 const FAQList: FAQProps[] = [
   {
     question: "Is this template free?",
-    answer: "Yes. It is a free NextJS Ai generator  template.",
+    answer: "Yes. It is a free NextJS Ai generator template.",
     value: "item-1",
   },
   {
@@ -44,26 +49,43 @@ const FAQList: FAQProps[] = [
 ];
 
 export const FAQSection = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration
+      once: true, // Trigger animation only once
+    });
+  }, []);
+
   return (
-    <section id="faq" className="container md:w-[700px] py-24 sm:py-32">
-      <div className="text-center mb-8">
+    <section
+      id="faq"
+      className="container md:w-[700px] py-24 sm:py-32"
+      data-aos="fade-up"
+    >
+      <div className="text-center mb-8" data-aos="fade-down">
         <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
           FAQS
         </h2>
-
         <h2 className="text-3xl md:text-4xl text-center font-bold">
           Common Questions
         </h2>
       </div>
 
-      <Accordion type="single" collapsible className="AccordionRoot">
+      <Accordion
+        type="single"
+        collapsible
+        className="AccordionRoot"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
         {FAQList.map(({ question, answer, value }) => (
-          <AccordionItem key={value} value={value}>
-            <AccordionTrigger className="text-left">
+          <AccordionItem key={value} value={value} className="mb-4">
+            <AccordionTrigger className="text-left text-lg font-medium">
               {question}
             </AccordionTrigger>
-
-            <AccordionContent>{answer}</AccordionContent>
+            <AccordionContent className="text-muted-foreground text-base mt-2">
+              {answer}
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

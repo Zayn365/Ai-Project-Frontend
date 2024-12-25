@@ -1,5 +1,8 @@
-// components/AiMusicForm.tsx
 "use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   Card,
   CardContent,
@@ -33,6 +36,15 @@ export function AiMusicForm({
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      offset: 100,
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
+
   const formAi = useForm<z.infer<typeof formAiMusicSchema>>({
     resolver: zodResolver(formAiMusicSchema),
     defaultValues: {
@@ -51,8 +63,14 @@ export function AiMusicForm({
   };
 
   return (
-    <Card className="bg-muted/60 dark:bg-card">
-      <CardHeader className="text-primary text-2xl">Create AI Music</CardHeader>
+    <Card className="bg-muted/60 dark:bg-card" data-aos="fade-up">
+      <CardHeader
+        className="text-primary text-2xl"
+        data-aos="fade-down"
+        data-aos-delay="200"
+      >
+        Create AI Music
+      </CardHeader>
       <CardContent>
         <Form {...formAi}>
           <form
@@ -63,7 +81,7 @@ export function AiMusicForm({
               control={formAi.control}
               name="genre"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-right" data-aos-delay="300">
                   <FormLabel>Genre</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter the music genre" {...field} />
@@ -76,7 +94,7 @@ export function AiMusicForm({
               control={formAi.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
+                <FormItem data-aos="fade-left" data-aos-delay="400">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Input
@@ -93,6 +111,8 @@ export function AiMusicForm({
               variant="default"
               className="mt-4 !bg-[#ea580c]"
               disabled={isLoading}
+              data-aos="zoom-in"
+              data-aos-delay="500"
             >
               {isLoading ? "Submitting..." : "Create Music"}
             </Button>
