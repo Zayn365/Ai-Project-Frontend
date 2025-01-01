@@ -1,4 +1,4 @@
-// File: C:\websites\zain-quraishi\Ai-Project-Frontend\app\ebook\page.tsx
+// File: /home/zayn/Applications/Ai-Project-Frontend/app/ebook/page.tsx
 import * as entry from '../../../../app/ebook/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

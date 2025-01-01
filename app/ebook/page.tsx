@@ -42,19 +42,20 @@ export default function AiEbookPage() {
         imagedetails: {
           title: values.title,
           size: values.size,
-          noOfImagesL: 1,
+          noOfImagesL: Number(values.noOfImagesL),
         },
         imagesurl: { url: values.imagesurl },
       });
-      setImages(image?.data?.message?.imagesurl?.url);
+      setImages(image?.data?.message?.imagesurl?.urls);
       setSubmittedData(values as any);
-      setContent(res?.data?.message?.content);
+      setContent(res?.data?.message);
       success("Successfully Created");
     } catch (err) {
       console.log(err);
       fail("Submission failed");
     }
   }
+
   return (
     <section className="container pt-24">
       <AiEbookForm onSubmit={handleSubmit} />
@@ -65,16 +66,17 @@ export default function AiEbookPage() {
           </CardHeader>
           <CardContent>
             <h3 className="text-xl font-bold">{submittedData.title}</h3>
-            <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center gap-4">
               {images?.length > 0 &&
-                images.map((item, key) => (
+                images.map((item: any, key) => (
                   <Image
                     key={key}
-                    className="rounded-md"
-                    src={item}
+                    className="rounded-md object-cover"
+                    src={item.url}
                     alt={`${key}`}
-                    width={500}
-                    height={500}
+                    width={300} // Default width
+                    height={300} // Default height
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw" // Responsive sizes
                   />
                 ))}
             </div>

@@ -45,7 +45,7 @@ export const formAiEbookSchema = z.object({
   size: z.enum(["256x256", "512x512", "1024x1024"], {
     required_error: "Please select an image size",
   }),
-  noOfImagesL: z.number().optional(),
+  noOfImagesL: z.any().optional(),
   imagesurl: z.object({
     url: z.array(z.string().url()).optional(),
   }),
@@ -66,7 +66,7 @@ export function AiEbookForm({
       audience: [],
       level: "Beginner",
       size: "256x256",
-      noOfImagesL: 1,
+      // noOfImagesL: 1,
       imagesurl: {
         url: [
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gaMRRUjOO72xhoR0E4gIU4wulCZLdHSM_A&s",
@@ -113,7 +113,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="title"
               render={({ field }) => (
-                <FormItem data-aos="fade-right" data-aos-delay="300"   >
+                <FormItem data-aos="fade-right" data-aos-delay="300">
                   <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter the ebook title" {...field} />
@@ -260,7 +260,7 @@ export function AiEbookForm({
               )}
             />
 
-            {/* Number of Images
+            {/* Number of Images */}
             <FormField
               control={formAi.control}
               name="noOfImagesL"
@@ -277,7 +277,7 @@ export function AiEbookForm({
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
             {/* Images URL */}
             <FormField
