@@ -64,7 +64,7 @@ export const MusicPlaylist: React.FC<MusicPlaylistProps> = ({
             key={track.id}
             className="border-b border-gray-200 dark:border-gray-700 pb-4"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex sm:flex-row sm:items-center justify-between gap-2">
               <div
                 className="cursor-pointer"
                 onClick={() => toggleLyrics(track.id)}
