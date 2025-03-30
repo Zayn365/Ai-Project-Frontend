@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 
 interface Track {
@@ -39,132 +38,59 @@ export const MusicPlaylist: React.FC<MusicPlaylistProps> = ({
   };
 
   return (
-    <>
-      <style>{`
-        .playlist-container {
-          display: flex;
-          flex-direction: column;
-          border: 1px solid #ccc;
-          border-radius: 12px;
-          overflow: hidden;
-          background: var(--background-color, #fff);
-          color: var(--text-color, #000);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .playlist-sidebar {
-          padding: 1rem;
-          background: linear-gradient(to bottom, #f3f3f3, #fff);
-        }
-
-        .playlist-sidebar img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
-          margin-bottom: 1rem;
-        }
-
-        .playlist-content {
-          padding: 1rem;
-        }
-
-        .track {
-          padding-bottom: 1rem;
-          border-bottom: 1px solid #ddd;
-        }
-
-        .track-title {
-          font-weight: 600;
-          font-size: 1.1rem;
-          cursor: pointer;
-        }
-
-        .track-meta {
-          font-size: 0.875rem;
-          color: #666;
-        }
-
-        .track audio {
-          width: 100%;
-          margin-top: 0.5rem;
-        }
-
-        .lyrics-box {
-          margin-top: 0.75rem;
-          font-size: 0.875rem;
-          background-color: #f1f1f1;
-          padding: 0.75rem;
-          border-radius: 6px;
-          white-space: pre-wrap;
-        }
-
-        .genre-pill {
-          margin-top: 0.5rem;
-          font-size: 0.7rem;
-          text-transform: uppercase;
-          color: #28a745;
-          font-weight: 600;
-        }
-
-        @media (min-width: 768px) {
-          .playlist-container {
-            flex-direction: row;
-          }
-
-          .playlist-sidebar {
-            width: 35%;
-            border-right: 1px solid #ddd;
-          }
-
-          .playlist-content {
-            width: 65%;
-            max-height: 80vh;
-            overflow-y: auto;
-          }
-
-          .track audio {
-            width: 250px;
-          }
-
-          .track-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-          }
-        }
-      `}</style>
-
-      <div className="playlist-container">
-        {/* Sidebar Info Section */}
-        <div className="playlist-sidebar">
-          <img src={coverImage} alt={title} />
-          <h2>{title}</h2>
-          <p>{description}</p>
-          {tracks[0]?.genre && (
-            <div className="genre-pill">Genre: {tracks[0].genre}</div>
-          )}
-        </div>
-
-        {/* Track List */}
-        <div className="playlist-content">
-          {tracks.map((track) => (
-            <div key={track.id} className="track">
-              <div className="track-header">
-                <div onClick={() => toggleLyrics(track.id)}>
-                  <p className="track-title">{track.title}</p>
-                  <p className="track-meta">{formatDuration(track.duration)}</p>
-                </div>
-                <audio controls src={track.audio_url} preload="metadata" />
-              </div>
-
-              {openLyrics === track.id && (
-                <div className="lyrics-box">{track.lyrics}</div>
-              )}
-            </div>
-          ))}
-        </div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white dark:bg-black text-black dark:text-white rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
+      {/* Sidebar Info */}
+      <div>
+        <img
+          src={coverImage}
+          alt={title}
+          className="rounded-lg w-full object-cover mb-4"
+        />
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2">{title}</h2>
+        <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
+          {description}
+        </p>
+        {tracks[0]?.genre && (
+          <p className="text-green-600 dark:text-green-400 font-medium uppercase text-xs">
+            Genre: {tracks[0].genre}
+          </p>
+        )}
       </div>
-    </>
+
+      {/* Track List - spans 2 columns on large screens */}
+      <div className="lg:col-span-2 space-y-6">
+        {tracks.map((track) => (
+          <div
+            key={track.id}
+            className="border-b border-gray-200 dark:border-gray-700 pb-4"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div
+                className="cursor-pointer"
+                onClick={() => toggleLyrics(track.id)}
+              >
+                <p className="text-lg sm:text-xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition">
+                  {track.title}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  {formatDuration(track.duration)}
+                </p>
+              </div>
+              <audio
+                controls
+                src={track.audio_url}
+                preload="metadata"
+                className="w-full sm:w-64 mt-2 sm:mt-0"
+              />
+            </div>
+            {openLyrics === track.id && (
+              <div className="mt-4 text-sm whitespace-pre-wrap text-gray-800 dark:text-gray-300 bg-gray-100 dark:bg-gray-900 p-4 rounded-md">
+                {track.lyrics}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };

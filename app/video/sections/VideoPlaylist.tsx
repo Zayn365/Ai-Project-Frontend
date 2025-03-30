@@ -15,9 +15,9 @@ interface VideoPlaylistProps {
 
 export const VideoPlaylist: React.FC<VideoPlaylistProps> = ({ video }) => {
   return (
-    <div className="flex flex-col lg:flex-row bg-white dark:bg-black text-black dark:text-white rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
-      {/* Main Video Section */}
-      <div className="w-full lg:w-2/3 p-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white dark:bg-black text-black dark:text-white rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 p-4">
+      {/* Main Video */}
+      <div className="lg:col-span-2">
         <div className="rounded-lg overflow-hidden aspect-video bg-black mb-4">
           <video
             controls
@@ -31,8 +31,8 @@ export const VideoPlaylist: React.FC<VideoPlaylistProps> = ({ video }) => {
         </h2>
       </div>
 
-      {/* Sidebar Thumbnails Section */}
-      <div className="w-full lg:w-1/3 border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-gray-700 p-4 space-y-4 max-h-[600px] overflow-y-auto">
+      {/* Thumbnail Sidebar */}
+      <div className="space-y-4 max-h-[600px] overflow-y-auto">
         {[...Array(1)].map((_, idx) => (
           <div
             key={idx}
