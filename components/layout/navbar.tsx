@@ -62,10 +62,10 @@ const routeList: RouteProps[] = [
         href: "/music",
         label: "Music",
       },
-      // {
-      //   href: "/imageAi",
-      //   label: "Image Generate",
-      // },
+      {
+        href: "/video",
+        label: "Video",
+      },
       {
         href: "/storytelling",
         label: "Storytelling",
