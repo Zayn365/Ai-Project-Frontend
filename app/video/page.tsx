@@ -37,7 +37,7 @@ export default function AiVideoPage() {
       {submittedData && (
         <Card>
           <CardHeader className="text-primary text-2xl">
-            {submittedData.description}{" "}
+            Submitted Video
           </CardHeader>
           <CardContent>
             {response?.video_url && (

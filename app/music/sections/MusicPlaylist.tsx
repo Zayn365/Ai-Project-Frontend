@@ -38,15 +38,15 @@ export const MusicPlaylist: React.FC<MusicPlaylistProps> = ({
   };
 
   return (
-    <div className="flex flex-col md:flex-row bg-white dark:bg-black text-black dark:text-white rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-800">
-      {/* Sidebar */}
-      <div className="md:w-1/3 bg-gradient-to-b from-gray-100 to-white dark:from-gray-800 dark:to-black p-6">
+    <div className="flex flex-col lg:flex-row bg-white dark:bg-black text-black dark:text-white rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-800">
+      {/* Sidebar Info Section */}
+      <div className="w-full lg:w-1/3 bg-gradient-to-b from-gray-100 to-white dark:from-gray-800 dark:to-black p-4 sm:p-6">
         <img
           src={coverImage}
           alt={title}
           className="rounded-lg w-full object-cover mb-4"
         />
-        <h2 className="text-3xl font-bold mb-1">{title}</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2">{title}</h2>
         <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
           {description}
         </p>
@@ -58,32 +58,35 @@ export const MusicPlaylist: React.FC<MusicPlaylistProps> = ({
       </div>
 
       {/* Track List */}
-      <div className="md:w-2/3 p-6 overflow-y-auto space-y-6 max-h-[80vh] bg-white dark:bg-black">
+      <div className="w-full lg:w-2/3 p-4 sm:p-6 space-y-6 bg-white dark:bg-black">
         {tracks.map((track) => (
           <div
             key={track.id}
             className="flex flex-col border-b border-gray-200 dark:border-gray-700 pb-4"
           >
-            <div className="flex flex-col md:flex-row md:items-center justify-between w-full">
+            {/* Title + Audio */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div
                 className="cursor-pointer"
                 onClick={() => toggleLyrics(track.id)}
               >
-                <p className="text-xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition">
+                <p className="text-lg sm:text-xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition">
                   {track.title}
                 </p>
                 <p className="text-gray-500 text-sm">
                   {formatDuration(track.duration)}
                 </p>
               </div>
+
               <audio
                 controls
                 src={track.audio_url}
                 preload="metadata"
-                className="w-full md:w-64 mt-2 md:mt-0"
+                className="w-full sm:w-64 mt-2 sm:mt-0"
               />
             </div>
 
+            {/* Lyrics */}
             {openLyrics === track.id && (
               <div className="mt-4 text-sm whitespace-pre-wrap text-gray-800 dark:text-gray-300 bg-gray-100 dark:bg-gray-900 p-4 rounded-md">
                 {track.lyrics}
