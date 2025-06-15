@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signUp } from "@/hooks/authHooks";
+import { useRouter } from "next/navigation";
 
 // Schema for Sign In and Sign Up
 const signInUpSchema = z
@@ -41,6 +42,7 @@ const signInUpSchema = z
 
 export default function AuthPage() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     AOS.init({
@@ -62,12 +64,12 @@ export default function AuthPage() {
 
   const onSubmit = async (values: z.infer<typeof signInUpSchema>) => {
     setIsSubmitting(true);
-    await signUp(values.email, values.password);
+    await signUp(values.email, values.password, router);
     setIsSubmitting(false);
   };
 
   return (
-    <section className="container pt-24 sm:pt-32 flex justify-center">
+    <section className="container flex justify-center items-center h-screen">
       <div
         className="flex flex-col sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden"
         data-aos="fade-up"

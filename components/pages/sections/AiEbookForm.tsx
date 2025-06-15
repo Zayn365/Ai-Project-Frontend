@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -95,7 +96,7 @@ export function AiEbookForm({
   }, []);
 
   return (
-    <Card className="bg-muted/60 dark:bg-card" ata-aos="fade-up">
+    <Card className="bg-muted/60 dark:bg-card" data-aos="fade-up">
       <CardHeader
         className="text-primary text-2xl"
         data-aos="fade-down"
@@ -113,7 +114,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="title"
               render={({ field }) => (
-                <FormItem data-aos="fade-right" data-aos-delay="300">
+                <FormItem className="fade-out-5">
                   <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter the ebook title" {...field} />
@@ -127,10 +128,10 @@ export function AiEbookForm({
               control={formAi.control}
               name="theme"
               render={({ field }) => (
-                <FormItem data-aos="fade-up" data-aos-delay="400">
+                <FormItem className="fade-out-5">
                   <FormLabel>Theme</FormLabel>
                   <FormControl>
-                    <div className="grid gap-2">
+                    <div className="flex items-center flex-wrap gap-2">
                       {[
                         "Drama",
                         "Thriller",
@@ -169,10 +170,10 @@ export function AiEbookForm({
               control={formAi.control}
               name="audience"
               render={({ field }) => (
-                <FormItem data-aos="fade-up" data-aos-delay="500">
+                <FormItem className="fade-out-5">
                   <FormLabel>Audience</FormLabel>
                   <FormControl>
-                    <div className="grid gap-2">
+                    <div className="flex items-center flex-wrap gap-2">
                       {["Adults", "Teens", "Children"].map((option: any) => (
                         <label
                           key={option}
@@ -204,10 +205,10 @@ export function AiEbookForm({
               control={formAi.control}
               name="level"
               render={({ field }) => (
-                <FormItem data-aos="fade-up" data-aos-delay="600">
+                <FormItem className="fade-out-5">
                   <FormLabel>Skill Level</FormLabel>
                   <FormControl>
-                    <div className="grid gap-2">
+                    <div className="flex items-center flex-wrap gap-2">
                       {["Beginner", "Intermediate", "Professional"].map(
                         (option) => (
                           <label
@@ -237,7 +238,7 @@ export function AiEbookForm({
               control={formAi.control}
               name="size"
               render={({ field }) => (
-                <FormItem data-aos="fade-up" data-aos-delay="700">
+                <FormItem className="fade-out-5">
                   <FormLabel>Image Size</FormLabel>
                   <FormControl>
                     <select
@@ -265,10 +266,11 @@ export function AiEbookForm({
               control={formAi.control}
               name="noOfImagesL"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="fade-out-5">
                   <FormLabel>Number of Images</FormLabel>
                   <FormControl>
                     <Input
+                      min={0}
                       type="number"
                       placeholder="Enter the number of images"
                       {...field}
@@ -284,10 +286,10 @@ export function AiEbookForm({
               control={formAi.control}
               name="imagesurl.url"
               render={({ field }: any) => (
-                <FormItem data-aos="fade-up" data-aos-delay="900">
+                <FormItem className="fade-out-5">
                   <FormLabel>Image URLs</FormLabel>
                   <FormControl>
-                    <textarea
+                    <Textarea
                       placeholder="Enter image URLs, one per line"
                       value={field.value.join("\n")}
                       onChange={(e) =>
@@ -304,10 +306,8 @@ export function AiEbookForm({
             <Button
               type="submit"
               variant="default"
-              className="mt-4 !bg-[#ea580c]"
+              className="mt-4 !bg-[#ea580c] fade-out-5"
               disabled={isLoading}
-              data-aos="fade-up"
-              data-aos-delay="900"
             >
               {isLoading ? "Submitting..." : "Create Ebook"}
             </Button>

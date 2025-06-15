@@ -1,11 +1,14 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import Cookies from "js-cookie";
 type user = {
   username: string;
   id: Number;
   password: string;
   email: string;
+  subscription: string;
+  plan: string;
+  type: string;
 } | null;
 interface AppContextType {
   user: user;

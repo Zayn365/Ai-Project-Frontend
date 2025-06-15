@@ -157,3 +157,8 @@ html {
 body {
   overflow-x: hidden;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ea580c #ffffff1A;
+}

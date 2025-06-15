@@ -36,7 +36,7 @@ export default function AiMusicPage() {
   }
 
   return (
-    <section className="container pt-24">
+    <section className="container pt-16 pb-4">
       <AiMusicForm onSubmit={handleSubmit} loading={loading} />
 
       {submittedData && musicResponse?.data?.length > 0 && (

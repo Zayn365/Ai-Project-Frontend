@@ -31,7 +31,7 @@ export default function AiVideoPage() {
   }
 
   return (
-    <section className="container pt-24 space-y-8">
+    <section className="container pt-16 pb-4 space-y-8">
       <AiVideoForm onSubmit={handleSubmit} loading={loading} />
 
       {submittedData && (

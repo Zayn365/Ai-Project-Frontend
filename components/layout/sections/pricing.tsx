@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import { useState } from "react";
 
 enum PopularPlan {
   NO = 0,
@@ -72,6 +74,11 @@ const plans: PlanProps[] = [
 ];
 
 export const PricingSection = () => {
+  const [selectedPlan, setSelectedPlan] = useState("Premium");
+
+  const handleCardClick = (title: string) => {
+    setSelectedPlan(title);
+  };
   return (
     <section className="container py-24 sm:py-32">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
@@ -91,11 +98,12 @@ export const PricingSection = () => {
           ({ title, popular, price, description, buttonText, benefitList }) => (
             <Card
               key={title}
-              className={
-                popular === PopularPlan?.YES
+              onClick={() => handleCardClick(title)}
+              className={`cursor-pointer transition-all duration-300 ${
+                selectedPlan === title
                   ? "drop-shadow-xl shadow-black/10 dark:shadow-white/10 border-[1.5px] border-primary lg:scale-[1.1]"
-                  : ""
-              }
+                  : "hover:border-primary/50 hover:shadow-md"
+              }`}
             >
               <CardHeader>
                 <CardTitle className="pb-2">{title}</CardTitle>

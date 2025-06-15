@@ -30,7 +30,7 @@ export default function AiStoryPage() {
   }
 
   return (
-    <section className="container pt-24">
+    <section className="container pt-16 pb-4">
       <AiStoryForm onSubmit={handleSubmit} />
       {submittedData && (
         <Card className="mt-8">

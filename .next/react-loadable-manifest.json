@@ -1,1 +1,38 @@
-{}
+{
+  "app\\ebook\\page.tsx -> @/components/pages/ebook": {
+    "id": 48664,
+    "files": [
+      "static/css/df49084a1d25dd5c.css",
+      "static/chunks/164f4fb6.f0a160e6510f7b8d.js",
+      "static/chunks/b645e135.71c9da8e57def0d7.js",
+      "static/chunks/ad2866b8.c6c1c557ab4960e6.js",
+      "static/chunks/639-cef4f2b7c4178165.js",
+      "static/chunks/897-c7dae7286303dc99.js",
+      "static/chunks/776-ab8f954ec113ff93.js",
+      "static/chunks/472-d5630a4327d12d47.js",
+      "static/chunks/162-3ec49ff796307ef6.js",
+      "static/chunks/442-e9e99571734babf2.js",
+      "static/chunks/274-751311ca3ecd9651.js",
+      "static/chunks/181-38ad8d024bfaa2a0.js",
+      "static/chunks/616.b19014736051cefd.js",
+      "static/chunks/664.a6fe4537baa4b398.js"
+    ]
+  },
+  "node_modules\\jspdf\\dist\\jspdf.es.min.js -> canvg": {
+    "id": 82865,
+    "files": [
+      "static/chunks/bc98253f.168adef1b0cc8d7a.js",
+      "static/chunks/124.71b0c1b7dc41ae40.js"
+    ]
+  },
+  "node_modules\\jspdf\\dist\\jspdf.es.min.js -> dompurify": {
+    "id": 1581,
+    "files": [
+      "static/chunks/581.203a02bed36ddb75.js"
+    ]
+  },
+  "node_modules\\jspdf\\dist\\jspdf.es.min.js -> html2canvas": {
+    "id": 81173,
+    "files": []
+  }
+}

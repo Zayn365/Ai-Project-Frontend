@@ -141,9 +141,8 @@ export const Navbar = () => {
 
               <div className="flex flex-col gap-2">
                 {routeList.map(({ href, label, list }) => (
-                  <>
+                  <React.Fragment key={href}>
                     <Button
-                      key={href}
                       onClick={() => {
                         list && list?.length > 0
                           ? setIsAiOpen(!isAiOpen)
@@ -191,7 +190,7 @@ export const Navbar = () => {
                           </div>
                         )
                       : ""}
-                  </>
+                  </React.Fragment>
                 ))}
               </div>
             </div>
@@ -303,9 +302,8 @@ export const Navbar = () => {
 
           <NavigationMenuItem>
             {routeList.map(({ href, label, list }) => (
-              <>
+              <React.Fragment key={href}>
                 <Button
-                  key={href}
                   onClick={() => {
                     list && list?.length > 0
                       ? setIsAiOpen(!isAiOpen)
@@ -356,7 +354,7 @@ export const Navbar = () => {
                       </div>
                     )
                   : ""}
-              </>
+              </React.Fragment>
             ))}
           </NavigationMenuItem>
         </NavigationMenuList>

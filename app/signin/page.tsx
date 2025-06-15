@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 // Schema for Sign In and Sign Up
 const signInUpSchema = z.object({
@@ -31,6 +32,7 @@ const signInUpSchema = z.object({
 
 export default function AuthPage() {
   const [isSubmitiing, setIsSubmiting] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     AOS.init({
@@ -52,12 +54,12 @@ export default function AuthPage() {
   const onSubmit = async (values: z.infer<typeof signInUpSchema>) => {
     setIsSubmiting(true);
 
-    await signIn(values.email, values.password);
+    await signIn(values.email, values.password, router);
     setIsSubmiting(false);
   };
 
   return (
-    <section className="container pt-24 sm:pt-32 flex justify-center">
+    <section className="container flex items-center justify-center h-screen">
       <div
         className="flex flex-wrap justify-between sm:flex-row bg-muted/90 dark:bg-card max-w-4xl w-full shadow-lg rounded-lg overflow-hidden"
         data-aos="fade-up"
