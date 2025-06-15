@@ -1,6 +1,6 @@
 {
   "app\\ebook\\page.tsx -> @/components/pages/ebook": {
-    "id": 48664,
+    "id": 64997,
     "files": [
       "static/css/df49084a1d25dd5c.css",
       "static/chunks/164f4fb6.f0a160e6510f7b8d.js",
@@ -10,12 +10,29 @@
       "static/chunks/897-c7dae7286303dc99.js",
       "static/chunks/776-ab8f954ec113ff93.js",
       "static/chunks/472-d5630a4327d12d47.js",
-      "static/chunks/162-3ec49ff796307ef6.js",
-      "static/chunks/442-e9e99571734babf2.js",
+      "static/chunks/759-ad5371096cfe6c45.js",
       "static/chunks/274-751311ca3ecd9651.js",
-      "static/chunks/181-38ad8d024bfaa2a0.js",
-      "static/chunks/616.b19014736051cefd.js",
-      "static/chunks/664.a6fe4537baa4b398.js"
+      "static/chunks/648-2ce6cb35e79f6636.js",
+      "static/chunks/27-a1248a6cdec05107.js",
+      "static/chunks/594.7a9e045c02fe5dae.js",
+      "static/chunks/647.daf384d723aff405.js",
+      "static/chunks/997.9d5e543e8a2d5646.js"
+    ]
+  },
+  "app\\music\\page.tsx -> @/components/pages/music": {
+    "id": 37065,
+    "files": [
+      "static/css/df49084a1d25dd5c.css",
+      "static/chunks/639-cef4f2b7c4178165.js",
+      "static/chunks/897-c7dae7286303dc99.js",
+      "static/chunks/776-ab8f954ec113ff93.js",
+      "static/chunks/472-d5630a4327d12d47.js",
+      "static/chunks/759-ad5371096cfe6c45.js",
+      "static/chunks/274-751311ca3ecd9651.js",
+      "static/chunks/27-a1248a6cdec05107.js",
+      "static/chunks/271-d415de6b8f8e354f.js",
+      "static/chunks/647.daf384d723aff405.js",
+      "static/chunks/65.4e26ffc527859cc0.js"
     ]
   },
   "node_modules\\jspdf\\dist\\jspdf.es.min.js -> canvg": {
