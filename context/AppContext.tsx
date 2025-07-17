@@ -9,6 +9,7 @@ type user = {
   subscription: string;
   plan: string;
   type: string;
+  credits: number;
 } | null;
 interface AppContextType {
   user: user;

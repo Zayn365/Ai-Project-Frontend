@@ -177,9 +177,12 @@ export default function AuthPage() {
                   <p className="text-xs mt-2">
                     Are you already{" "}
                     <span className="text-primary">Signed Up?</span> Then Please{" "}
-                    <a href="/signin" className="text-primary underline">
+                    <span
+                      onClick={() => router.push("/signin")}
+                      className="text-primary underline cursor-pointer"
+                    >
                       Click Here!
-                    </a>
+                    </span>
                     .
                   </p>
                 </div>

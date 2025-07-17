@@ -31,44 +31,43 @@ const plans: PlanProps[] = [
     popular: 0,
     price: 0,
     description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+      "Get started with our AI content creation tools for free. Perfect for individuals exploring content generation.",
     buttonText: "Start Free Trial",
     benefitList: [
-      "1 team member",
-      "1 GB storage",
-      "Upto 2 pages",
+      "10 credits/month",
+      "Basic eBook and blog creation",
       "Community support",
-      "AI assistance",
+      "Limited text-to-speech (1 voice)",
     ],
   },
   {
     title: "Premium",
     popular: 1,
-    price: 45,
+    price: 49,
     description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Get starterd",
+      "Unlock advanced AI tools and higher credit limits for professional content creators and small teams.",
+    buttonText: "Get Started",
     benefitList: [
-      "4 team member",
-      "8 GB storage",
-      "Upto 6 pages",
-      "Priority support",
-      "AI assistance",
+      "500 credits/month",
+      "Advanced eBook, blog, and story creation",
+      "Basic music and video generation",
+      "Priority email support",
+      "Text-to-speech (5 voices)",
     ],
   },
   {
     title: "Enterprise",
     popular: 0,
-    price: 120,
+    price: 149,
     description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Contact US",
+      "Tailored for businesses with high-volume content needs. Access premium features and dedicated support.",
+    buttonText: "Get Started",
     benefitList: [
-      "10 team member",
-      "20 GB storage",
-      "Upto 10 pages",
-      "Phone & email support",
-      "AI assistance",
+      "2000 credits/month",
+      "Full access to eBook, blog, story, music, and video creation",
+      "Custom AI model training",
+      "Priority phone and email support",
+      "Text-to-speech (10 voices + custom voice)",
     ],
   },
 ];
@@ -80,7 +79,7 @@ export const PricingSection = () => {
     setSelectedPlan(title);
   };
   return (
-    <section className="container py-24 sm:py-32">
+    <section className="container py-4">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
         Pricing
       </h2>
@@ -90,7 +89,8 @@ export const PricingSection = () => {
       </h2>
 
       <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground pb-14">
-        Lorem ipsum dolor sit amet consectetur adipisicing reiciendis.
+        Flexible plans designed to supercharge your content creation with
+        AI-powered tools for eBooks, blogs, music, videos, and more.
       </h3>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-4">
@@ -131,9 +131,9 @@ export const PricingSection = () => {
 
               <CardFooter>
                 <Button
-                  variant={
-                    popular === PopularPlan?.YES ? "default" : "secondary"
-                  }
+                  // variant={
+                  //   popular === PopularPlan?.YES ? "default" : "secondary"
+                  // }
                   className="w-full"
                 >
                   {buttonText}

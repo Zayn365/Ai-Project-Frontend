@@ -151,9 +151,12 @@ export default function AuthPage() {
                   </p>
                   <p className="text-xs mt-2">
                     If you don&apos;t have an account
-                    <a href="/signup" className="text-primary ml-1 underline">
+                    <span
+                      onClick={() => router.push("/signup")}
+                      className="text-primary ml-1 underline cursor-pointer"
+                    >
                       Click Here!
-                    </a>
+                    </span>
                   </p>
                 </div>
               </form>

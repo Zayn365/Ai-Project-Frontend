@@ -12,7 +12,7 @@ export async function signIn(email: string, password: string, router: any) {
     Cookies.set("user", JSON.stringify(DATA.user));
     Cookies.set("authToken", DATA.token);
     success("User Logged-In Successfully");
-    // window.location.href = "/";
+    window.location.href = "/";
     router.push("/");
   } catch (error: any) {
     console.log(error);
@@ -32,6 +32,7 @@ export async function signUp(email: string, password: string, router: any) {
       type: "user",
       plan: "free",
       subscription: "",
+      credits: 10,
     });
     success("User Created Successfully");
     router.push("/signin");

@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAppContext } from "@/context/AppContext";
+import { Button } from "@/components/ui/button";
+import PricingModal from "../sections/PricingModal";
 
 export default function ProfilePage() {
   const { user } = useAppContext();
+  const [pricingOpen, setPricingOpen] = useState<boolean>(false);
+
   return (
     <section className="container pt-16 pb-4">
       <Card className="mt-8">
@@ -32,9 +36,17 @@ export default function ProfilePage() {
                 readOnly
               />
             </div>
+            <div>
+              <Label>Credits</Label>
+              <Input value={user?.credits} readOnly />
+            </div>
           </div>
         </CardContent>
+        <CardContent>
+          <Button onClick={() => setPricingOpen(true)}>Buy Credits</Button>
+        </CardContent>
       </Card>
+      <PricingModal open={pricingOpen} setOpen={setPricingOpen} />
     </section>
   );
 }
