@@ -25,9 +25,7 @@ const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const getUser = Cookies.get("user");
   const getAuthToken = Cookies.get("authToken");
-  const [user, setUser] = useState<string | null>(
-    getUser ? JSON.parse(getUser) : null
-  );
+  const [user, setUser] = useState<any>(getUser ? JSON.parse(getUser) : null);
   const [authToken, setAuthtoken] = useState<string | null>(
     getAuthToken ? getAuthToken : null
   );

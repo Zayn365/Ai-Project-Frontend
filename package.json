@@ -23,6 +23,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@stripe/stripe-js": "^7.5.0",
     "@tanstack/react-table": "^8.21.3",
     "aos": "^2.3.4",
     "axios": "^1.7.7",
