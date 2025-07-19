@@ -1,9 +1,7 @@
 import AdminDashboard from "@/components/pages/admin-dashboard";
 import React from "react";
 
-type Props = {};
-
-const page = (props: Props) => {
+const page = () => {
   return (
     <div className="p-4">
       <AdminDashboard />

@@ -4,7 +4,7 @@ import { useAppContext } from "@/context/AppContext";
 import useUrl from "@/hooks/useUrl";
 import { Axios } from "@/utils/Axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
 
@@ -12,11 +12,13 @@ export default function PaymentSuccessPage() {
   const { query } = useUrl();
   const router = useRouter();
   const { setUser } = useAppContext();
+  const hasVerifiedRef = useRef(false);
 
   const verifyPayment = async () => {
     try {
       const payload = {
         id: query?.id,
+        email: query?.email,
         plan: query?.title,
         subscription: query?.title,
         credits: query?.quan,
@@ -38,10 +40,11 @@ export default function PaymentSuccessPage() {
   };
 
   useEffect(() => {
-    if (query?.session_id) {
+    if (!hasVerifiedRef.current && query?.session_id) {
+      hasVerifiedRef.current = true;
       verifyPayment();
     }
-  }, [query?.session_id]);
+  }, [query]);
   return (
     <div className="container">
       <Card className="mt-8">

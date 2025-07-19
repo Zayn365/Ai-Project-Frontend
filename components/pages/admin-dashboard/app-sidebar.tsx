@@ -38,7 +38,7 @@ const items = [
   },
   {
     title: "Invoices",
-    url: "#",
+    url: "/admin-dashboard/invoices",
     icon: Receipt,
   },
 ];
@@ -51,7 +51,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Ai Generator</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xl font-bold text-[#ea580c]">Ai Generator</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

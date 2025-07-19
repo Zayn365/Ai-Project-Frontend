@@ -104,9 +104,30 @@ export default function UserManagement() {
     },
   ];
 
+  const totalActiveUsers = usersList.filter(
+    (user: any) => !user.blocked
+  ).length;
+  const totalBlockedUsers = usersList.filter(
+    (user: any) => user.blocked
+  ).length;
+
   return (
-    <div className="overflow-hidden">
-      <div className="text-3xl font-bold">UserManagement</div>
+    <div className="">
+      <div className="text-3xl font-bold">User Management</div>
+      <div className="mt-4 flex flex-wrap gap-4">
+        <div className="flex flex-col px-4 py-2 border rounded-lg w-fit">
+          <div className="font-semibold">Total Users</div>
+          <div>{usersList?.length}</div>
+        </div>
+        <div className="flex flex-col px-4 py-2 border rounded-lg w-fit">
+          <div className="font-semibold">Total Active Users</div>
+          <div>{totalActiveUsers}</div>
+        </div>
+        <div className="flex flex-col px-4 py-2 border rounded-lg w-fit">
+          <div className="font-semibold">Total Blocked Users</div>
+          <div>{totalBlockedUsers}</div>
+        </div>
+      </div>
       <div className="mt-4">
         <Input
           placeholder="Search by username, email, type, plan, status"
@@ -114,7 +135,7 @@ export default function UserManagement() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="mt-4 overflow-x-scroll">
+      <div className="mt-4">
         <DataTable columns={columns} data={filteredUsers} />
       </div>
     </div>

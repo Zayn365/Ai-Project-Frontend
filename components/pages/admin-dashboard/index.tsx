@@ -1,13 +1,16 @@
 "use client";
 import { Axios } from "@/utils/Axios";
 import React, { useEffect, useState } from "react";
+import { EarningAreaChart } from "./EarningAreaChart";
 
 export default function AdminDashboard() {
   const [countData, SetCountData] = useState<any>();
+  const [invoicesData, setInvoicesData] = useState<any>([]);
 
   const getAllCount = async () => {
     try {
       const { data: userData } = await Axios.get("/user");
+      const { data: invoiceData } = await Axios.get("/invoice");
       const { data: ebookData } = await Axios.get("/ebook");
       const { data: storyBookData } = await Axios.get("/storybook");
       const { data: musicData } = await Axios.get("/music");
@@ -15,34 +18,48 @@ export default function AdminDashboard() {
       const { data: imagesData } = await Axios.get("/images");
       const { data: videosData } = await Axios.get("/videos");
 
+      setInvoicesData(invoiceData?.message);
+
       SetCountData([
         {
+          title: "Total Invoices",
+          count: invoiceData?.message.length,
+        },
+        {
+          title: "Total Income",
+          count: `$${invoiceData?.message?.reduce(
+            (total: number, item: any) =>
+              total + Number(item?.productprice || 0),
+            0
+          )}`,
+        },
+        {
           title: "Total Users",
-          count: userData?.message.length,
+          count: userData?.message?.length,
         },
         {
           title: "Total Ebooks",
-          count: ebookData?.message.length,
+          count: ebookData?.message?.length,
         },
         {
           title: "Total Story Books",
-          count: storyBookData?.message.length,
+          count: storyBookData?.message?.length,
         },
         {
           title: "Total Musics",
-          count: musicData?.message.length,
+          count: musicData?.message?.length,
         },
         {
           title: "Total Blogs",
-          count: blogData?.message.length,
+          count: blogData?.message?.length,
         },
         {
           title: "Total Videos",
-          count: videosData?.message.length,
+          count: videosData?.message?.length,
         },
         {
           title: "Total Images",
-          count: imagesData?.message.length,
+          count: imagesData?.message?.length,
         },
       ]);
     } catch (error) {
@@ -68,6 +85,9 @@ export default function AdminDashboard() {
             <div>{item?.count}</div>
           </div>
         ))}
+      </div>
+      <div className="mt-4">
+        <EarningAreaChart data={invoicesData} />
       </div>
     </div>
   );
