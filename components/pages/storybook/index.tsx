@@ -1,58 +1,53 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
-import { formAiEbookSchema } from "@/components/pages/sections/AiEbookForm";
-import { z } from "zod";
-import { success, fail } from "@/utils/ToastMessages";
-import { Axios } from "@/utils/Axios";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import ReactMarkdown from "react-markdown";
-import html2pdf from "html2pdf.js";
-import { Download, Trash2 } from "lucide-react";
-import { useAppContext } from "@/context/AppContext";
+import Loader from "@/components/common/loader";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AccordionHeader } from "@radix-ui/react-accordion";
-import { marked } from "marked";
-import CreateEbookModal from "./create-ebook-modal";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAppContext } from "@/context/AppContext";
+import { Axios } from "@/utils/Axios";
+import { success } from "@/utils/ToastMessages";
+import { AccordionHeader } from "@radix-ui/react-accordion";
+import { fail } from "assert";
+import html2pdf from "html2pdf.js";
+import { Download, Trash2 } from "lucide-react";
+import { marked } from "marked";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import Loader from "@/components/common/loader";
-import CreateAiEbookModal from "./create-ai-ebook-modal";
-import { ebookFormSchema } from "../sections/EbookForm";
+import { z } from "zod";
+import ReactMarkdown from "react-markdown";
+import CreateAiStorybookModal from "./create-ai-storybook-modal";
 import { creditCharge } from "@/utils/CreditCharges";
 import Cookies from "js-cookie";
-import { Input } from "@/components/ui/input";
 
-type ebookSchema = {
-  theme:
-    | ["Drama", "Thriller", "Tragic", "Adventure", "Comedy", "Horror", "Gore"];
-  title: String;
-  content: String;
-  audience: ["Adults", "Teens", "Children"];
-  level: "Beginner" | "Intermediate" | "Professional";
-};
+const storySchema = z.object({
+  prompt: z.string().min(10, "Prompt must be at least 10 characters"),
+});
 
-export default function EbookPage() {
+export default function StoryBookPage() {
   const contentRef = useRef<HTMLDivElement>(null);
   const { user, setUser } = useAppContext();
-  const [submittedData, setSubmittedData] = useState<ebookSchema | null>(null);
-  const [content, setContent] = useState<any>("");
-  const [allEbooks, setAllEbooks] = useState<any[]>([]);
-  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<any>(null);
   const [openAI, setOpenAI] = useState<boolean>(false);
+
+  const [allStoryBooks, setAllStoryBooks] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [filteredEbook, setFilteredEbook] = useState<any[]>([]);
+  const [filteredData, setFilteredData] = useState<any[]>([]);
   const [search, setSearch] = useState("");
 
-  const getAllEbooks = async () => {
+  const [submittedData, setSubmittedData] = useState<z.infer<
+    typeof storySchema
+  > | null>(null);
+
+  const getAllStoryBook = async () => {
     try {
-      const { data } = await Axios.get("/ebook");
+      const { data } = await Axios.get("/storybook");
       if (data.status === 200) {
-        setAllEbooks(data?.message);
+        setAllStoryBooks(data?.message);
         setIsLoading(false);
       }
     } catch (error) {
@@ -61,84 +56,43 @@ export default function EbookPage() {
     }
   };
 
-  async function handleSubmit(values: z.infer<typeof formAiEbookSchema>) {
+  async function handleSubmit(values: z.infer<typeof storySchema>) {
     const { data: userData } = await Axios.get(`/user/${user?.id}`);
     if (userData?.message?.blocked) {
       toast.error("You are not able to create!");
       return;
     }
-    if (userData?.message?.credits < creditCharge?.ebook) {
+    if (userData?.message?.credits < creditCharge?.storybook) {
       toast.error("Please recharge your credits!");
       return;
     }
-    if ((values.audience.length && values.theme) === 0) {
-      fail("Please Define All Values");
-      return;
-    }
     try {
-      const res = await Axios.post("/ebook/ai", {
+      const res = await Axios.post("/storybook/ai", {
         prompt: {
-          title: values.title,
-          audience: `${values.audience.concat()}`,
-          theme: `${values.theme.concat()}`,
-          level: values.level.toLowerCase(),
+          title: values.prompt,
         },
         userId: user?.id,
       });
-      // const image = await Axios.post("/images/ai", {
-      //   userId: user?.id,
-      //   prompt: {
-      //     title: values.title,
-      //     size: values.size,
-      //     noOfImagesL: Number(values.noOfImagesL) ?? 1,
-      //   },
-      // });
-      // setImages(image?.data?.message?.imagesurl?.urls);
       const { data: userCreditData } = await Axios.put(
         `/user/credits/${user?.id}`,
         {
-          credits: creditCharge?.ebook,
+          credits: creditCharge?.storybook,
         }
       );
       Cookies.set("user", JSON.stringify(userCreditData?.message));
       setUser(userCreditData?.message);
-      setSubmittedData(values as any);
-      setContent(res?.data?.message);
+      setMessage(res.data.message);
+      setSubmittedData(values);
       success("Successfully Created");
       setOpenAI(false);
-      getAllEbooks();
+      getAllStoryBook();
     } catch (err) {
       console.log(err);
       fail("Submission failed");
     }
   }
 
-  async function handleSimpleEbookSubmit(
-    values: z.infer<typeof ebookFormSchema>
-  ) {
-    const { data: userData } = await Axios.get(`/user/${user?.id}`);
-    if (userData?.message?.blocked) {
-      toast.error("You are not able to create!");
-      return;
-    }
-    try {
-      const res = await Axios.post("/ebook", {
-        title: values.title,
-        content: values.content,
-        userId: user?.id,
-      });
-      setSubmittedData(values as any);
-      setContent(res?.data?.message);
-      success("Successfully Created");
-      setOpen(false);
-      getAllEbooks();
-    } catch (err) {
-      console.log(err);
-      fail("Submission failed");
-    }
-  }
-
-  const handleDownloadPDF = async (ebookContent: string, title: string) => {
+  const handleDownloadPDF = async (storyBookContent: string, title: string) => {
     const tempDiv = document.createElement("div");
 
     // Style the temporary div
@@ -153,37 +107,39 @@ export default function EbookPage() {
     // Append prose-style CSS
     const style = document.createElement("style");
     style.innerHTML = `
-        .prose {
-          color: #000;
-          font-size: 14px;
-          line-height: 1.6;
-        }
-        .prose h1 {
-          font-size: 24px;
-          font-weight: bold;
-          margin-top: 32px;
-          margin-bottom: 16px;
-        }
-        .prose h2 {
-          font-size: 20px;
-          font-weight: bold;
-          margin-top: 24px;
-          margin-bottom: 12px;
-        }
-        .prose p {
-          margin-bottom: 12px;
-          text-align: justify;
-        }
-      `;
+                .prose {
+                  color: #000;
+                  font-size: 14px;
+                  line-height: 1.6;
+                }
+                .prose h1 {
+                  font-size: 24px;
+                  font-weight: bold;
+                  margin-top: 32px;
+                  margin-bottom: 16px;
+                }
+                .prose h2 {
+                  font-size: 20px;
+                  font-weight: bold;
+                  margin-top: 24px;
+                  margin-bottom: 12px;
+                }
+                .prose p {
+                  margin-bottom: 12px;
+                  text-align: justify;
+                }
+              `;
     tempDiv.appendChild(style);
 
-    const parsedHTML = await marked.parse(ebookContent.replace(/\\n/g, "\n"));
+    const parsedHTML = await marked.parse(
+      storyBookContent.replace(/\\n/g, "\n")
+    );
 
-    const ebookHTML = document.createElement("div");
-    ebookHTML.className = "prose";
-    ebookHTML.innerHTML = parsedHTML;
+    const blogHTML = document.createElement("div");
+    blogHTML.className = "prose";
+    blogHTML.innerHTML = parsedHTML;
 
-    tempDiv.appendChild(ebookHTML);
+    tempDiv.appendChild(blogHTML);
     document.body.appendChild(tempDiv);
 
     // PDF Options
@@ -217,12 +173,12 @@ export default function EbookPage() {
 
   const handleDelete = async (id: number) => {
     try {
-      const { data } = await Axios.delete(`/ebook/${id}`, {
+      const { data } = await Axios.delete(`/storybook/${id}`, {
         data: { userId: user?.id },
       });
       if (data.status === 200) {
         toast.success(`Deleted successfully`);
-        getAllEbooks();
+        getAllStoryBook();
       } else {
         toast.error(data?.message);
       }
@@ -232,26 +188,27 @@ export default function EbookPage() {
   };
 
   useEffect(() => {
-    getAllEbooks();
+    getAllStoryBook();
   }, []);
 
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
 
-    const filtered = allEbooks.filter((item: any) => {
-      const name = item.content ? String(item.content).toLowerCase() : ""; // Ensure `name` is a string
+    const filtered = allStoryBooks.filter((item: any) => {
+      const name = item.content ? String(item.content).toLowerCase() : "";
       return name.includes(lowerSearch);
     });
 
-    setFilteredEbook(filtered);
-  }, [search, allEbooks]);
+    setFilteredData(filtered);
+  }, [search, allStoryBooks]);
 
   return (
     <section className="container pt-16 pb-4">
       {user?.id && (
         <div className="flex justify-end mb-2 gap-4">
-          <Button onClick={() => setOpen(!open)}>Create a Ebook</Button>
-          <Button onClick={() => setOpenAI(!openAI)}>Create a Ai Ebook</Button>
+          <Button onClick={() => setOpenAI(!openAI)}>
+            Create a Ai StoryBook
+          </Button>
         </div>
       )}
       {isLoading ? (
@@ -265,19 +222,15 @@ export default function EbookPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          {submittedData && content && (
+          {message && (
             <Card className="mt-8 relative">
               <CardHeader className="text-primary text-2xl">
                 <div className="flex justify-between items-center gap-4">
-                  <p>Submitted EBook</p>
+                  <p>Submitted Storybook</p>
                 </div>
               </CardHeader>
               <CardContent>
-                <h3 className="text-xl font-bold">{submittedData.title}</h3>
-                <p>Theme: {submittedData.theme}</p>
-                <p>Audience: {submittedData.audience}</p>
-                <p>Difficulty: {submittedData.level}</p>
-                <p>Ebook:</p>
+                <p>Storybook</p>
                 <div ref={contentRef} className="prose prose-lg max-w-none">
                   <ReactMarkdown
                     components={{
@@ -307,7 +260,7 @@ export default function EbookPage() {
                       ),
                     }}
                   >
-                    {content?.content?.replace(/\\n/g, "\n") ??
+                    {message?.content?.replace(/\\n/g, "\n") ??
                       "Sorry! Something went wrong"}
                   </ReactMarkdown>
                 </div>
@@ -315,20 +268,20 @@ export default function EbookPage() {
             </Card>
           )}
           <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">All EBooks</h2>
-            {filteredEbook.length > 0 ? (
+            <h2 className="text-2xl font-bold mb-4">All Storybooks</h2>
+            {filteredData.length > 0 ? (
               <Accordion type="single" collapsible className="w-full">
-                {filteredEbook.map((ebook, index) => (
+                {filteredData.map((storybook, index) => (
                   <AccordionItem
-                    key={ebook.id}
-                    value={`ebook-${index}`}
+                    key={storybook.id}
+                    value={`storybook-${index}`}
                     className="mb-4 border rounded-md"
                   >
                     <AccordionHeader>
                       <AccordionTrigger className="flex justify-between items-center w-full p-4 transition-colors">
                         <h3 className="text-xl font-bold">
-                          {ebook.content.match(/^# (.*?)$/m)?.[1] ||
-                            `EBook ${ebook.id}`}
+                          {storybook.content.match(/^# (.*?)$/m)?.[1] ||
+                            `Storybook ${storybook.id}`}
                         </h3>
                       </AccordionTrigger>
                     </AccordionHeader>
@@ -338,25 +291,27 @@ export default function EbookPage() {
                           <div className="flex justify-between items-center gap-4">
                             <p ref={contentRef}>
                               {" "}
-                              {ebook.content.match(/^# (.*?)$/m)?.[1] ||
-                                `eBook ${ebook.id}`}
+                              {storybook.content.match(/^# (.*?)$/m)?.[1] ||
+                                `storybook ${storybook.id}`}
                             </p>
                             <div className="flex items-center gap-2">
                               <Download
                                 className="cursor-pointer"
                                 onClick={() =>
                                   handleDownloadPDF(
-                                    ebook.content,
-                                    ebook.content.match(/^# (.*?)$/m)?.[1] ||
-                                      `eBook_${ebook.id}`
+                                    storybook.content,
+                                    storybook.content.match(
+                                      /^# (.*?)$/m
+                                    )?.[1] || `storybook_${storybook.id}`
                                   )
                                 }
                               />
-                              {Number(ebook?.user_id) === Number(user?.id) && (
+                              {Number(storybook?.user_id) ===
+                                Number(user?.id) && (
                                 <Trash2
                                   color="#FF0000"
                                   className="cursor-pointer"
-                                  onClick={() => handleDelete(ebook.id)}
+                                  onClick={() => handleDelete(storybook.id)}
                                 />
                               )}
                             </div>
@@ -395,7 +350,7 @@ export default function EbookPage() {
                                 ),
                               }}
                             >
-                              {ebook.content?.replace(/\\n/g, "\n") ??
+                              {storybook.content?.replace(/\\n/g, "\n") ??
                                 "Sorry! Something went wrong"}
                             </ReactMarkdown>
                           </div>
@@ -406,17 +361,12 @@ export default function EbookPage() {
                 ))}
               </Accordion>
             ) : (
-              <p>No eBooks available.</p>
+              <p>No storybooks available.</p>
             )}
           </div>
         </>
       )}
-      <CreateEbookModal
-        open={open}
-        onClose={() => setOpen(false)}
-        handleSubmit={handleSimpleEbookSubmit}
-      />
-      <CreateAiEbookModal
+      <CreateAiStorybookModal
         open={openAI}
         onClose={() => setOpenAI(false)}
         handleSubmit={handleSubmit}

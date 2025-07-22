@@ -10,6 +10,7 @@ type user = {
   plan: string;
   type: string;
   credits: number;
+  blocked: boolean;
 } | null;
 interface AppContextType {
   user: user;

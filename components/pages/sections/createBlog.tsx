@@ -101,7 +101,7 @@ export function BlogForm({
               name="body"
               render={({ field }) => (
                 <FormItem data-aos="fade-left" data-aos-delay="600">
-                  <FormLabel>Body</FormLabel>
+                  <FormLabel>Content</FormLabel>
                   <FormControl>
                     <Textarea placeholder="Enter the blog content" {...field} />
                   </FormControl>

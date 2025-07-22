@@ -19,6 +19,9 @@ import { AccordionHeader } from "@radix-ui/react-accordion";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import Loader from "@/components/common/loader";
+import { Input } from "@/components/ui/input";
+import { creditCharge } from "@/utils/CreditCharges";
+import Cookies from "js-cookie";
 
 const musicSchema = z.object({
   genre: z.array(z.string()).min(1, "Select at least one genre"),
@@ -26,7 +29,7 @@ const musicSchema = z.object({
 });
 
 export default function MusicPage() {
-  const { user } = useAppContext();
+  const { user, setUser } = useAppContext();
   const { createMusic, loading, error } = useCreateMusic();
 
   const [openAI, setOpenAI] = useState<boolean>(false);
@@ -36,6 +39,8 @@ export default function MusicPage() {
   const [musicResponse, setMusicResponse] = useState<any>(null);
   const [allAiMusic, setAllAiMusic] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [filteredData, setFilteredData] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
 
   const getAllAiMusic = async () => {
     try {
@@ -52,10 +57,28 @@ export default function MusicPage() {
 
   async function handleSubmit(values: z.infer<typeof musicSchema>) {
     const prompt = `${values.genre} - ${values.description}`;
-    console.log("Submitting AI Music prompt:", prompt);
+
+    const { data: userData } = await Axios.get(`/user/${user?.id}`);
+    if (userData?.message?.blocked) {
+      toast.error("You are not able to create!");
+      return;
+    }
+    if (userData?.message?.credits < creditCharge?.music) {
+      toast.error("Please recharge your credits!");
+      return;
+    }
 
     try {
       const response = await createMusic(prompt);
+      const { data: userCreditData } = await Axios.put(
+        `/user/credits/${user?.id}`,
+        {
+          credits: creditCharge?.ebook,
+        }
+      );
+      Cookies.set("user", JSON.stringify(userCreditData?.message));
+      setUser(userCreditData?.message);
+
       setMusicResponse(response);
       setSubmittedData(values);
       success("Successfully created AI Music!");
@@ -87,10 +110,48 @@ export default function MusicPage() {
     getAllAiMusic();
   }, []);
 
+  useEffect(() => {
+    const lowerSearch = search.toLowerCase();
+
+    const filtered = allAiMusic.filter((item: any) => {
+      if (item.content && Array.isArray(item.content)) {
+        return item.content.some((contentItem: any) => {
+          const title = contentItem.title
+            ? contentItem.title.toLowerCase()
+            : "";
+          const lyric = contentItem.lyric
+            ? contentItem.lyric.toLowerCase()
+            : "";
+          const style = contentItem.style
+            ? contentItem.style.toLowerCase()
+            : "";
+
+          return (
+            title.includes(lowerSearch) ||
+            lyric.includes(lowerSearch) ||
+            style.includes(lowerSearch)
+          );
+        });
+      }
+      return false;
+    });
+
+    setFilteredData(filtered);
+  }, [search, allAiMusic]);
+
   return (
     <section className="container pt-16 pb-4">
-      <div className="flex justify-end mb-2 gap-4">
-        <Button onClick={() => setOpenAI(!openAI)}>Create a Ai Music</Button>
+      {user?.id && (
+        <div className="flex justify-end mb-2 gap-4">
+          <Button onClick={() => setOpenAI(!openAI)}>Create a Ai Music</Button>
+        </div>
+      )}
+      <div className="mt-4">
+        <Input
+          placeholder="Search by title"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       {submittedData && musicResponse?.content?.length > 0 && (
@@ -124,9 +185,9 @@ export default function MusicPage() {
       ) : (
         <div className="mt-8">
           <h2 className="text-2xl font-bold mb-4">All Musics</h2>
-          {allAiMusic.length > 0 ? (
+          {filteredData.length > 0 ? (
             <Accordion type="single" collapsible className="w-full">
-              {allAiMusic.map((item, index) => (
+              {filteredData.map((item, index) => (
                 <AccordionItem
                   key={item.id}
                   value={`item-${index}`}

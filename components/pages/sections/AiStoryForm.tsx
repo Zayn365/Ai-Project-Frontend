@@ -24,7 +24,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formAiStorySchema = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters"),
   prompt: z.string().min(10, "Prompt must be at least 10 characters"),
 });
 
@@ -47,7 +46,6 @@ export function AiStoryForm({
   const formAi = useForm<z.infer<typeof formAiStorySchema>>({
     resolver: zodResolver(formAiStorySchema),
     defaultValues: {
-      title: "",
       prompt: "",
     },
   });
@@ -77,7 +75,7 @@ export function AiStoryForm({
             className="grid w-full gap-4"
           >
             {/* Title Field */}
-            <FormField
+            {/* <FormField
               control={formAi.control}
               name="title"
               render={({ field }) => (
@@ -89,7 +87,7 @@ export function AiStoryForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             {/* Prompt Field */}
             <FormField

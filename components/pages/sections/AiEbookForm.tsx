@@ -262,7 +262,7 @@ export function AiEbookForm({
             />
 
             {/* Number of Images */}
-            <FormField
+            {/* <FormField
               control={formAi.control}
               name="noOfImagesL"
               render={({ field }) => (
@@ -279,10 +279,10 @@ export function AiEbookForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             {/* Images URL */}
-            <FormField
+            {/* <FormField
               control={formAi.control}
               name="imagesurl.url"
               render={({ field }: any) => (
@@ -301,7 +301,7 @@ export function AiEbookForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <Button
               type="submit"
