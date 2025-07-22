@@ -39,10 +39,6 @@ export default function StoryBookPage() {
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [search, setSearch] = useState("");
 
-  const [submittedData, setSubmittedData] = useState<z.infer<
-    typeof storySchema
-  > | null>(null);
-
   const getAllStoryBook = async () => {
     try {
       const { data } = await Axios.get("/storybook");
@@ -82,7 +78,6 @@ export default function StoryBookPage() {
       Cookies.set("user", JSON.stringify(userCreditData?.message));
       setUser(userCreditData?.message);
       setMessage(res.data.message);
-      setSubmittedData(values);
       success("Successfully Created");
       setOpenAI(false);
       getAllStoryBook();
@@ -230,7 +225,6 @@ export default function StoryBookPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p>Storybook</p>
                 <div ref={contentRef} className="prose prose-lg max-w-none">
                   <ReactMarkdown
                     components={{
