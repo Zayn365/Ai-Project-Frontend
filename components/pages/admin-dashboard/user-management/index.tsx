@@ -105,11 +105,11 @@ export default function UserManagement() {
   ];
 
   const totalActiveUsers = usersList.filter(
-    (user: any) => !user.blocked
-  ).length;
+    (user: any) => !user?.blocked
+  )?.length;
   const totalBlockedUsers = usersList.filter(
-    (user: any) => user.blocked
-  ).length;
+    (user: any) => user?.blocked
+  )?.length;
 
   return (
     <div className="">
