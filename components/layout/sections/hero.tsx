@@ -65,7 +65,7 @@ export const HeroSection = () => {
               <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
             </Button>
 
-            <Button
+            {/* <Button
               asChild
               variant="secondary"
               className="w-5/6 md:w-1/4 font-bold"
@@ -73,7 +73,7 @@ export const HeroSection = () => {
               <Link href="#" target="_blank">
                 Github Repository
               </Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
 
